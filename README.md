@@ -12,3 +12,4 @@
   <li>Chạy file index.py</li>
   <li>Truy cập: http://127.0.0.1:5000/</li>
 </ol>
+# CNPM
