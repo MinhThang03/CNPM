@@ -14,6 +14,9 @@ class AuthenticatedView(ModelView):
 
 class RoomModelView(AuthenticatedView):
     can_export = True
+    form_excluded_columns = ('room_book', 'typeRoom')
+    can_view_details = True
+    column_searchable_list = ('name', )
 
 class CategoryRoomView(AuthenticatedView):
     form_excluded_columns = ('room')
@@ -21,6 +24,8 @@ class CategoryRoomView(AuthenticatedView):
 class UserView(AuthenticatedView):
     form_excluded_columns = ('room_book', 'billcus', 'billemp')
     column_default_sort = 'name'
+    can_view_details = True
+    column_searchable_list = ('name', 'email')
 
 class RoleView(AuthenticatedView):
     form_excluded_columns = ('user')
@@ -31,6 +36,8 @@ class CategoryCustomerView(AuthenticatedView):
 class RoomBookView(AuthenticatedView):
     form_excluded_columns = ('book_information', 'bill')
     can_export = True
+    can_view_details = True
+    column_searchable_list = ('user_id', )
 
 class LabelRoomView(AuthenticatedView):
     form_excluded_columns = ('typeRoom')
@@ -40,12 +47,17 @@ class TypeRoomView(AuthenticatedView):
 
 class BookInformationView(AuthenticatedView):
     can_export = True
+    can_view_details = True
+    column_searchable_list = ('id', )
 
 class TypeBookView(AuthenticatedView):
     form_excluded_columns = ('room_book')
 
 class BillView(AuthenticatedView):
     can_export = True
+    can_view_details = True
+    column_searchable_list = ('customer_id', 'employee_id', 'datetime')
+
 
 
 
@@ -81,7 +93,7 @@ admin.add_view(BookInformationView(BookInformation, db.session))
 admin.add_view(TypeBookView(TypeBook, db.session))
 admin.add_view(BillView(Bill, db.session))
 # admin.add_view(StatsView(name="Thong ke doanh thu"))
-admin.add_view(LogoutView(name="Dang xuat"))
+
 
 
 class AuthenticatedViewWithBaseView(BaseView):
@@ -105,3 +117,5 @@ class BaoCaoMatDoSuDungPhong(AuthenticatedViewWithBaseView):
 
 
 admin.add_view(BaoCaoMatDoSuDungPhong(name='BCMDSDP'))
+
+admin.add_view(LogoutView(name="Dang xuat"))
