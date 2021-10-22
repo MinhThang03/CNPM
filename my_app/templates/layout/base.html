@@ -10,20 +10,81 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    	<link rel="stylesheet" href="../../static/css/superfish.css">
+	<!-- Owl Slider -->
+	<!-- <link rel="stylesheet" href="../../static/css/owl.carousel.css"> -->
+	<!-- <link rel="stylesheet" href="../../static/css/owl.theme.default.min.css"> -->
+	<!-- Date Picker -->
+	<link rel="stylesheet" href="../../static/css/bootstrap-datepicker.min.css">
+	<!-- CS Select -->
+	<link rel="stylesheet" href="../../static/css/cs-select.css">
+	<link rel="stylesheet" href="../../static/css/cs-skin-border.css">
+
+	<!-- Themify Icons -->
+	<link rel="stylesheet" href="../../static/css/themify-icons.css">
+	<!-- Flat Icon -->
+	<link rel="stylesheet" href="../../static/css/flaticon.css">
+	<!-- Icomoon -->
+	<link rel="stylesheet" href="../../static/css/icomoon.css">
+	<!-- Flexslider  -->
+	<link rel="stylesheet" href="../../static/css/flexslider.css">
+
+	<!-- Style -->
+	<link rel="stylesheet" href="../../static/css/style.css">
 </head>
 <body>
-    <div class="container1">
+
+   <div id="fh5co-wrapper">
+    <div id="fh5co-page">
+
+
+
     {% block header %}
         {% include 'layout/header.html' %}
     {% endblock %}
 
     {% block content %}
-        <h1>MY CONTENT </h1>
+
     {% endblock %}
 
     {% block footer %}
         {% include 'layout/footer.html' %}
     {% endblock %}
+
     </div>
+    <!-- END fh5co-page -->
+
+</div>
+<!-- END fh5co-wrapper -->
+
+
+	<!-- Javascripts -->
+	<script src="../../static/js/jquery-2.1.4.min.js"></script>
+	<!-- Dropdown Menu -->
+	<script src="../../static/js/hoverIntent.js"></script>
+	<script src="../../static/js/superfish.js"></script>
+	<!-- Bootstrap -->
+	<script src="../../static/js/bootstrap.min.js"></script>
+	<!-- Waypoints -->
+	<script src="../../static/js/jquery.waypoints.min.js"></script>
+	<!-- Counters -->
+	<script src="../../static/js/jquery.countTo.js"></script>
+	<!-- Stellar Parallax -->
+	<script src="../../static/js/jquery.stellar.min.js"></script>
+	<!-- Owl Slider -->
+	<!-- // <script src="../../static/js/owl.carousel.min.js"></script> -->
+	<!-- Date Picker -->
+	<script src="../../static/js/bootstrap-datepicker.min.js"></script>
+	<!-- CS Select -->
+	<script src="../../static/js/classie.js"></script>
+	<script src="../../static/js/selectFx.js"></script>
+	<!-- Flexslider -->
+	<script src="../../static/js/jquery.flexslider-min.js"></script>
+
+	<script src="../../static/js/custom.js"></script>
+
+
 </body>
+
+
 </html>

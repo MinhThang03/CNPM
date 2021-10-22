@@ -70,7 +70,7 @@ class LogoutView(BaseView):
         return current_user.is_authenticated
 
 admin.add_view(RoomModelView(Room, db.session))
-admin.add_view(CategoryRoomView(CategoryRoom, db.session))
+admin.add_view(CategoryRoomView(CategoryRoom, db.session , name = 'Category'))
 admin.add_view(UserView(User, db.session))
 admin.add_view(RoleView(Role, db.session))
 admin.add_view(CategoryCustomerView(CategoryCustomer, db.session))
@@ -82,3 +82,26 @@ admin.add_view(TypeBookView(TypeBook, db.session))
 admin.add_view(BillView(Bill, db.session))
 # admin.add_view(StatsView(name="Thong ke doanh thu"))
 admin.add_view(LogoutView(name="Dang xuat"))
+
+
+class AuthenticatedViewWithBaseView(BaseView):
+    def is_accessible(self):
+        return current_user.is_authenticated
+
+
+class ThongKeDoanhThu(AuthenticatedViewWithBaseView):
+    @expose('/')
+    def index(self):
+        return self.render('admin/ThongKeDoanhThu.html')
+
+
+
+admin.add_view(ThongKeDoanhThu(name='TKDT'))
+
+class BaoCaoMatDoSuDungPhong(AuthenticatedViewWithBaseView):
+    @expose('/')
+    def index(self):
+        return self.render('admin/BCMatDoDungPhong.html')
+
+
+admin.add_view(BaoCaoMatDoSuDungPhong(name='BCMDSDP'))
