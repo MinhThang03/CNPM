@@ -84,17 +84,17 @@ class LogoutView(BaseView):
     def is_accessible(self):
         return current_user.is_authenticated
 
-admin.add_view(UserView(User, db.session,  name = 'Người dùng'))
-admin.add_view(RoleView(Role, db.session , name = 'Quyền'))
-admin.add_view(CategoryCustomerView(CategoryCustomer, db.session , name = 'Loại khách'))
-admin.add_view(RoomModelView(Room, db.session, name='Phòng') )
-admin.add_view(LabelRoomView(LabelRoom, db.session, name='Nhãn mô tả'))
-admin.add_view(TypeRoomView(TypeRoom, db.session, name ='Đặc tính phòng'))
-admin.add_view(CategoryRoomView(CategoryRoom, db.session, name='Loại phòng'))
-admin.add_view(RoomBookView(RoomBook, db.session , name='Phiếu đặt phòng'))
-admin.add_view(BookInformationView(BookInformation, db.session, name='Thông tin phiếu đặt phòng'))
-admin.add_view(TypeBookView(TypeBook, db.session, name = 'Kiểu đặt phòng'))
-admin.add_view(BillView(Bill, db.session, name = 'Hóa đơn'))
+admin.add_view(UserView(User, db.session,  name = 'Người dùng' , category='Quản lý người dùng'))
+admin.add_view(RoleView(Role, db.session , name = 'Quyền', category='Quản lý người dùng'))
+admin.add_view(CategoryCustomerView(CategoryCustomer, db.session , name = 'Loại khách', category='Quản lý người dùng'))
+admin.add_view(RoomModelView(Room, db.session, name='Phòng', category='Quản Lý phòng' ))
+admin.add_view(LabelRoomView(LabelRoom, db.session, name='Nhãn mô tả', category='Quản Lý phòng'))
+admin.add_view(TypeRoomView(TypeRoom, db.session, name ='Đặc tính phòng', category='Quản Lý phòng'))
+admin.add_view(CategoryRoomView(CategoryRoom, db.session, name='Loại phòng', category='Quản Lý phòng'))
+admin.add_view(RoomBookView(RoomBook, db.session , name='Phiếu đặt phòng', category='Quản lý đặt phòng'))
+admin.add_view(BookInformationView(BookInformation, db.session, name = "Thông tin phiếu đặt phòng", category='Quản lý đặt phòng'))
+admin.add_view(TypeBookView(TypeBook, db.session, name = 'Kiểu đặt phòng', category='Quản lý đặt phòng'))
+admin.add_view(BillView(Bill, db.session, name = 'Hóa đơn', category='Thống kê'))
 # admin.add_view(StatsView(name="Thong ke doanh thu"))
 
 
@@ -111,7 +111,7 @@ class ThongKeDoanhThu(AuthenticatedViewWithBaseView):
 
 
 
-admin.add_view(ThongKeDoanhThu(name='TKDT'))
+admin.add_view(ThongKeDoanhThu(name='Thống kê doanh thu', category='Thống kê'))
 
 class BaoCaoMatDoSuDungPhong(AuthenticatedViewWithBaseView):
     @expose('/')
@@ -119,6 +119,6 @@ class BaoCaoMatDoSuDungPhong(AuthenticatedViewWithBaseView):
         return self.render('admin/BCMatDoDungPhong.html')
 
 
-admin.add_view(BaoCaoMatDoSuDungPhong(name='BCMDSDP'))
+admin.add_view(BaoCaoMatDoSuDungPhong(name='Báo cáo mật độ sữ dụng phòng', category='Thống kê'))
 
-admin.add_view(LogoutView(name="Dang xuat"))
+admin.add_view(LogoutView(name="Đăng xuất"))

@@ -45,9 +45,11 @@ input[type=text] {
     border-radius: 0px;
     font-weight: bold;
     outline: 0;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
     padding-left: 0px;
     color: #ECF0F5;
+    border-radius: 6px;
+    padding-left: 12px;
 }
 
 input[type=password] {
@@ -61,6 +63,8 @@ input[type=password] {
     padding-left: 0px;
     margin-bottom: 20px;
     color: white;
+    border-radius: 6px;
+    padding-left: 12px;
 }
 
 .form-group {
