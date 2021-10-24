@@ -1,15 +1,13 @@
-# UTESaleApp
+# UTEQlKhachSan
 <p><strong>Ứng dụng demo sử dụng Python Flask</strong></p>
 <p><strong>Công nghệ sử dụng: Python Flask + SqlAlchemy tương tác MySQL</strong></p>
-<p><strong>Các bước chạy project</strong></p>
+<p><strong>Hướng dẫn tạo data để truy cập trang Admin</strong></p>
 <ol>
-  <li>Clone project</li>
-  <li>Tạo môi trường ảo (nếu chưa có): virtualenv venv</li>
-  <li>Kích hoạt môi trường ảo: trên Windows chạy venv/Script/activate</li>
-  <li>Cài đặt thư viện: pip install -r requirements.txt</li>
-  <li>Tạo CSDL rỗng với tên: utesaleapp</li>
-  <li>Chạy file models.py để thực thi lệnh db.create_all() cho tạo cơ sở dữ liệu</li>
-  <li>Chạy file index.py</li>
-  <li>Truy cập: http://127.0.0.1:5000/</li>
+  <li>Tạo một new schema trong mysql có tên: qlkhachsan</li>
+  <li>Chạy code file model để tạo table</li>
+  <li>Tạo một dữ liệu trong table role</li>
+  <li>Tạo một dữ liệu user với các trường username, passowrd, name, email, role_id bắt buộc</li>
+  <li>Lưu ý: password phải lưu dướng dạng mã băm hashlib.md5</li>
+  <li>Dữ liệu trong cột role_id tham chiếu id của bảng role</li>
 </ol>
 # CNPM
