@@ -41,6 +41,7 @@ class RoomBookView(AuthenticatedView):
     column_searchable_list = ('user_id', )
     column_display_pk = True
 
+
 class LabelRoomView(AuthenticatedView):
     form_excluded_columns = ('typeRoom')
 
