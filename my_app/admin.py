@@ -26,6 +26,7 @@ class UserView(AuthenticatedView):
     column_default_sort = 'name'
     can_view_details = True
     column_searchable_list = ('name', 'email')
+    column_sortable_list = ('name',)
 
 class RoleView(AuthenticatedView):
     form_excluded_columns = ('user')
@@ -38,6 +39,7 @@ class RoomBookView(AuthenticatedView):
     can_export = True
     can_view_details = True
     column_searchable_list = ('user_id', )
+    column_display_pk = True
 
 class LabelRoomView(AuthenticatedView):
     form_excluded_columns = ('typeRoom')
@@ -48,7 +50,7 @@ class TypeRoomView(AuthenticatedView):
 class BookInformationView(AuthenticatedView):
     can_export = True
     can_view_details = True
-    column_searchable_list = ('id', )
+    column_searchable_list = ('room_book_id', )
 
 class TypeBookView(AuthenticatedView):
     form_excluded_columns = ('room_book')
@@ -81,17 +83,17 @@ class LogoutView(BaseView):
     def is_accessible(self):
         return current_user.is_authenticated
 
-admin.add_view(RoomModelView(Room, db.session))
-admin.add_view(CategoryRoomView(CategoryRoom, db.session , name = 'Category'))
-admin.add_view(UserView(User, db.session))
-admin.add_view(RoleView(Role, db.session))
-admin.add_view(CategoryCustomerView(CategoryCustomer, db.session))
-admin.add_view(RoomBookView(RoomBook, db.session))
-admin.add_view(LabelRoomView(LabelRoom, db.session))
-admin.add_view(TypeRoomView(TypeRoom, db.session))
-admin.add_view(BookInformationView(BookInformation, db.session))
-admin.add_view(TypeBookView(TypeBook, db.session))
-admin.add_view(BillView(Bill, db.session))
+admin.add_view(UserView(User, db.session,  name = 'Người dùng'))
+admin.add_view(RoleView(Role, db.session , name = 'Quyền'))
+admin.add_view(CategoryCustomerView(CategoryCustomer, db.session , name = 'Loại khách'))
+admin.add_view(RoomModelView(Room, db.session, name='Phòng') )
+admin.add_view(LabelRoomView(LabelRoom, db.session, name='Nhãn mô tả'))
+admin.add_view(TypeRoomView(TypeRoom, db.session, name ='Đặc tính phòng'))
+admin.add_view(CategoryRoomView(CategoryRoom, db.session, name='Loại phòng'))
+admin.add_view(RoomBookView(RoomBook, db.session , name='Phiếu đặt phòng'))
+admin.add_view(BookInformationView(BookInformation, db.session, name='Thông tin phiếu đặt phòng'))
+admin.add_view(TypeBookView(TypeBook, db.session, name = 'Kiểu đặt phòng'))
+admin.add_view(BillView(Bill, db.session, name = 'Hóa đơn'))
 # admin.add_view(StatsView(name="Thong ke doanh thu"))
 
 
