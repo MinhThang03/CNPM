@@ -42,5 +42,17 @@ def login_exe():
 #     return "FAILED"
 
 
+@app.route("/loginUser")
+def LoginControll():
+    return render_template("/layout/loginUser.html")
+
+@app.route("/registerUser")
+def RegisterControll():
+    return render_template("/layout/registerUser.html")
+
+@app.route("/userInformation")
+def UserInformationControll():
+    return render_template("/layout/userInformation.html")
+
 if __name__ == '__main__':
     app.run(debug=True)

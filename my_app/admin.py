@@ -122,3 +122,20 @@ class BaoCaoMatDoSuDungPhong(AuthenticatedViewWithBaseView):
 admin.add_view(BaoCaoMatDoSuDungPhong(name='Báo cáo mật độ sữ dụng phòng', category='Thống kê'))
 
 admin.add_view(LogoutView(name="Đăng xuất"))
+
+
+class LapPhieuThuePhong(AuthenticatedViewWithBaseView):
+    @expose('/')
+    def index(self):
+        return self.render('admin/LapPhieuThuePhong.html')
+
+
+admin.add_view(LapPhieuThuePhong(name='Lập phiếu thuê phòng'))
+
+class LapHoaDon(AuthenticatedViewWithBaseView):
+    @expose('/')
+    def index(self):
+        return self.render('admin/LapHoaDon.html')
+
+
+admin.add_view(LapHoaDon(name='Lập Hoá Đơn'))
