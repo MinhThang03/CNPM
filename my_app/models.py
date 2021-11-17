@@ -1,7 +1,10 @@
+from time import time
+
+import jwt
 from sqlalchemy import Column, String, Boolean, DateTime, Integer, Float, ForeignKey
 from sqlalchemy.orm import relationship
 from flask_login import UserMixin
-from my_app import db
+from my_app import db, app
 from datetime import datetime
 
 
@@ -19,36 +22,62 @@ class User(db.Model, UserMixin):
     username = Column(String(50), nullable=False, unique=True)
     password = Column(String(100), nullable=False)
     joined_date = Column(DateTime, default=datetime.now())
-    active = Column(Boolean, default=True)
+    active = Column(Boolean)
     name = Column(String(80), nullable=False)
-    email = Column(String(50), nullable = False)
+    email = Column(String(50), nullable=False, unique=True)
     address = Column(String(100))
     phone = Column(String(11))
     image = Column(String(120))
     birthdate = Column(DateTime)
+    code_active = Column(String(20))
     role_id = Column(Integer, ForeignKey(Role.id), nullable=False)
     room_book = relationship('RoomBook', backref="User_room", lazy=True)
     billcus = relationship('Bill', backref='User_bill', foreign_keys='Bill.customer_id', lazy=True)
     billemp = relationship('Bill', backref='User_emp', foreign_keys='Bill.employee_id', lazy=True)
 
-
     def __str__(self):
         return self.username
 
+    def get_reset_password_token(self, expires_in=600):
+        return jwt.encode({'reset_password': self.id, 'exp': time() + expires_in}, app.config['SECRET_KEY'],
+                          algorithm='HS256').decode("utf-8")
+
+    def get_active_account_token(self):
+        return jwt.encode({'active_account': self.username}, app.config['SECRET_KEY'],
+                          algorithm='HS256').decode("utf-8")
+
+    @staticmethod
+    def verify_reset_password_token(token):
+        try:
+            id = jwt.decode(token, app.config['SECRET_KEY'],
+                            algorithms=['HS256'])['reset_password']
+        except:
+            return
+        return User.query.get(id)
+
+    @staticmethod
+    def verify_active_account_token(token):
+        try:
+            username = jwt.decode(token, app.config['SECRET_KEY'],
+                            algorithms=['HS256'])['active_account']
+        except:
+            return
+        return User.query.filter(User.username == username).all()[0]
 
 
 class CategoryCustomer(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
-    type = Column(String(20), nullable = False)
+    type = Column(String(20), nullable=False)
     percent = Column(Integer, default=0)
     book_information = relationship('BookInformation', backref="categoryCustomer", lazy=True)
 
     def __str__(self):
         return self.type
 
+
 class CategoryRoom(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
-    number_people = Column(Integer, unique=True, nullable = False)
+    number_people = Column(Integer, unique=True, nullable=False)
     max_people = Column(Integer)
     surcharge = Column(Integer)
     room = relationship('Room', backref="categoryRoom", lazy=True)
@@ -59,7 +88,7 @@ class CategoryRoom(db.Model):
 
 class LabelRoom(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
-    description = Column(String(60), nullable = False)
+    description = Column(String(60), nullable=False)
     percent = Column(Float, default=0)
     typeRoom = relationship('TypeRoom', backref="labelRoom", lazy=True)
 
@@ -79,9 +108,10 @@ class Room(db.Model):
     def __str__(self):
         return self.name
 
+
 class TypeBook(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
-    type = Column(String(20), nullable = False)
+    type = Column(String(20), nullable=False)
     percent_cost = Column(Float, default=0)
     room_book = relationship('RoomBook', backref="typeBook", lazy=True)
 
@@ -102,6 +132,7 @@ class RoomBook(db.Model):
     def __str__(self):
         return str(self.id)
 
+
 class BookInformation(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     customer_name = Column(String(60))
@@ -112,6 +143,7 @@ class BookInformation(db.Model):
 
     def __str__(self):
         return str(self.id)
+
 
 class TypeRoom(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -138,6 +170,3 @@ class Bill(db.Model):
 
 if __name__ == '__main__':
     db.create_all()
-
-
-

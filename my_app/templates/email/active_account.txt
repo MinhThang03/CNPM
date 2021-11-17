@@ -1,0 +1,9 @@
+Dear {{ user.username }},
+
+To active account click on the following link:
+
+{{ url_for('active_account', token=token, _external=True) }}
+
+If you have not requested a password reset simply ignore this message.
+
+Sincerely,
