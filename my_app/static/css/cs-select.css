@@ -4,7 +4,7 @@ div.cs-select {
 	vertical-align: middle;
 	position: relative;
 	text-align: left;
-	background: #fff;
+	background: #000;
 	z-index: 100;
 	width: 100%;
 	max-width: 500px;
@@ -32,6 +32,8 @@ div.cs-select:focus {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	color: #FF5722;
+	width: 192%;
 }
 
 /* Placeholder and selected option */
@@ -53,6 +55,7 @@ div.cs-select:focus {
 .cs-select > span::after {
 	content: '\25BE';
 	right: 1em;
+
 }
 
 .cs-select .cs-selected span::after {

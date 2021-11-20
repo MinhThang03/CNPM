@@ -23,7 +23,6 @@ def add_user(name, username, password, email):
                 username=username,
                 password=password,
                 email=email,
-                code_active=code_active
                 )
 
     db.session.add(user)

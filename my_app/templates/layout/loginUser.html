@@ -14,6 +14,29 @@
 </head>
 <body style="background-color: #999999;">
 
+    <style>
+        .minwith420{
+            min-width: 420px !important;
+        }
+
+        .ForgotPassword{
+            margin-top: 0px;
+            margin-bottom: 28px;
+            padding: 16px;
+            font-size:  1.2rem;
+        }
+
+        .ForgotPassword-link{
+            font-size:  1.2rem;
+            color: #FF5722;
+        }
+
+        .ForgotPassword-link:hover{
+            color: darkred;
+        }
+    </style>
+
+
 <div class="limiter">
     <div class="container-login100">
         <div class="login100-more" style="background-image: url('../../static/images/slider1.jpg');"></div>
@@ -26,7 +49,7 @@
                 </span>
 
                 {% if err_msg %}
-                    <div class="alert alert-danger">
+                    <div class="alert alert-danger minwith420">
                         {{ err_msg }}
                     </div>
                 {% endif %}
@@ -43,9 +66,9 @@
                     <span class="focus-input100"></span>
                 </div>
 
-                <p>
+                <p class="ForgotPassword">
                     Forgot Your Password?
-                    <a href="/reset_password_request">Click to Reset</a>
+                    <a class="ForgotPassword-link" href="/reset_password_request">Click to Reset</a>
 {#                    <a href="{{ url_for('reset_password_request') }}">Click to Reset</a>#}
                 </p>
 

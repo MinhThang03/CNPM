@@ -181,5 +181,29 @@ def UserInformationControll():
     return render_template("layout/userInformation.html")
 
 
+@app.route("/activeUser")
+def UserActiveControll():
+    return render_template("layout/activeUser.html")
+
+
+@app.route("/RegisterRoomFast")
+def RegisterRoomFastControll():
+    return render_template("layout/RegisterRoomFast.html")
+
+@app.route("/RegisterRoomDetails")
+def RegisterRoomDetailsControll():
+    return render_template("layout/RegisterRoomDetails.html")
+
+@app.route("/listMyRoom")
+def ListRoomDetailsControll():
+    return render_template("layout/listMyRoom.html")
+
+
+@app.route("/MyRoomDetails")
+def MyRoomDetailsFormControll():
+    return render_template("layout/MyRoomDetails.html")
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)

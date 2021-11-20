@@ -5,7 +5,7 @@ from flask_login import LoginManager
 from flask_mail import Mail
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://root:nhoclun3112001@localhost/qlkhachsan?charset=utf8mb4"
+app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://root:duong1412@localhost/qlkhachsan?charset=utf8mb4"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 app.secret_key = "!@#$%^&*()(*&^%$#@#$%^&*("
 app.config["PAGE_SIZE"] = 6

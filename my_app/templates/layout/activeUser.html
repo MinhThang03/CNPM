@@ -1,12 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %} TRANG CHU {% endblock %}
+    </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    	<link rel="stylesheet" href="../../static/css/superfish.css">
+	<!-- Owl Slider -->
+	<!-- <link rel="stylesheet" href="../../static/css/owl.carousel.css"> -->
+	<!-- <link rel="stylesheet" href="../../static/css/owl.theme.default.min.css"> -->
+	<!-- Date Picker -->
+	<link rel="stylesheet" href="../../static/css/bootstrap-datepicker.min.css">
+	<!-- CS Select -->
+	<link rel="stylesheet" href="../../static/css/cs-select.css">
+	<link rel="stylesheet" href="../../static/css/cs-skin-border.css">
+
+	<!-- Themify Icons -->
+	<link rel="stylesheet" href="../../static/css/themify-icons.css">
+	<!-- Flat Icon -->
+	<link rel="stylesheet" href="../../static/css/flaticon.css">
+	<!-- Icomoon -->
+	<link rel="stylesheet" href="../../static/css/icomoon.css">
+	<!-- Flexslider  -->
+	<link rel="stylesheet" href="../../static/css/flexslider.css">
+
+	<!-- Style -->
+	<link rel="stylesheet" href="../../static/css/style.css">
+</head>
+<body>
+
+
+
 <style>
     .header__navbar-user-img {
         width: 22px;
         border-radius: 50%;
         border: 1px solid rgba(0, 0, 0, 0.1);
-    }
-
-    .margin16{
-        margin-bottom: 16px !important;
     }
 
 
@@ -70,13 +104,8 @@
                                 <li class="">
                                     <a href="/userInformation">Xin chào!</a>
                                 </li>
-
                                 <li class="">
                                     <a href="/userInformation">Tài khoản của tôi</a>
-                                </li>
-
-                                <li class="">
-                                    <a href="/listMyRoom">Danh sách phòng đã đặt</a>
                                 </li>
 
                                 <li class="">
@@ -98,10 +127,7 @@
 
 <aside id="fh5co-hero" class="js-fullheight">
     <div class="flexslider js-fullheight">
-        <ul class="slides" style="
-        height: 97%;
-        margin-bottom: 36px;
-    ">
+        <ul class="slides">
             <li style="background-image: url(../../static/images/slider1.jpg);">
                 <div class="overlay-gradient"></div>
                 <div class="container">
@@ -109,9 +135,9 @@
                         <div class="slider-text-inner js-fullheight">
                             <div class="desc">
                                 <p><span>UTE Hotel</span></p>
-                                <h2>Reserve Room for Family Vacation</h2>
+                                <h2> Đăng ký thành công</h2>
                                 <p>
-                                    <a href="/RegisterRoomFast" class="btn btn-primary btn-lg">Book Now</a>
+                                    <a href="#" class="btn btn-primary btn-lg">Login</a>
                                 </p>
                             </div>
                         </div>
@@ -125,9 +151,9 @@
                         <div class="slider-text-inner js-fullheight">
                             <div class="desc">
                                 <p><span>UTE Hotel</span></p>
-                                <h2>Make Your Vacation Comfortable</h2>
+                                <h2> Đăng ký thành công</h2>
                                 <p>
-                                    <a href="/RegisterRoomFast" class="btn btn-primary btn-lg">Book Now</a>
+                                    <a href="#" class="btn btn-primary btn-lg">            Login         </a>
                                 </p>
                             </div>
                         </div>
@@ -141,9 +167,9 @@
                         <div class="slider-text-inner js-fullheight">
                             <div class="desc">
                                 <p><span>UTE Hotel</span></p>
-                                <h2>A Best Place To Enjoy Your Life</h2>
+                                <h2> Đăng ký thành công</h2>
                                 <p>
-                                    <a href="/RegisterRoomFast" class="btn btn-primary btn-lg">Book Now</a>
+                                    <a href="#" class="btn btn-primary btn-lg">Login</a>
                                 </p>
                             </div>
                         </div>
@@ -153,5 +179,42 @@
 
         </ul>
     </div>
-</aside class="margin16">
+</aside>
 
+
+    <!-- END fh5co-page -->
+
+</div>
+<!-- END fh5co-wrapper -->
+
+
+	<!-- Javascripts -->
+	<script src="../../static/js/jquery-2.1.4.min.js"></script>
+	<!-- Dropdown Menu -->
+	<script src="../../static/js/hoverIntent.js"></script>
+	<script src="../../static/js/superfish.js"></script>
+	<!-- Bootstrap -->
+	<script src="../../static/js/bootstrap.min.js"></script>
+	<!-- Waypoints -->
+	<script src="../../static/js/jquery.waypoints.min.js"></script>
+	<!-- Counters -->
+	<script src="../../static/js/jquery.countTo.js"></script>
+	<!-- Stellar Parallax -->
+	<script src="../../static/js/jquery.stellar.min.js"></script>
+	<!-- Owl Slider -->
+	<!-- // <script src="../../static/js/owl.carousel.min.js"></script> -->
+	<!-- Date Picker -->
+	<script src="../../static/js/bootstrap-datepicker.min.js"></script>
+	<!-- CS Select -->
+	<script src="../../static/js/classie.js"></script>
+	<script src="../../static/js/selectFx.js"></script>
+	<!-- Flexslider -->
+	<script src="../../static/js/jquery.flexslider-min.js"></script>
+
+	<script src="../../static/js/custom.js"></script>
+
+
+</body>
+
+
+</html>
