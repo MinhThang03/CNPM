@@ -29,7 +29,6 @@ class User(db.Model, UserMixin):
     phone = Column(String(11))
     image = Column(String(120))
     birthdate = Column(DateTime)
-    code_active = Column(String(20))
     role_id = Column(Integer, ForeignKey(Role.id), nullable=False)
     room_book = relationship('RoomBook', backref="User_room", lazy=True)
     billcus = relationship('Bill', backref='User_bill', foreign_keys='Bill.customer_id', lazy=True)

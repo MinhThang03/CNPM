@@ -16,14 +16,13 @@ def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
 
 def add_user(name, username, password, email):
     password = str(hashlib.md5(password.encode("utf-8")).digest())
-    code_active = id_generator()
+    # code_active = id_generator()
     roles_id = Role.query.filter(Role.name.contains('user')).all()[0].id
     user = User(role_id=roles_id,
                 name=name,
                 username=username,
                 password=password,
                 email=email,
-                code_active=code_active
                 )
 
     db.session.add(user)
