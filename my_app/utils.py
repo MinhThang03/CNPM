@@ -1,6 +1,7 @@
 import string
 from threading import Thread
 from flask import render_template
+from flask_login import current_user
 from sqlalchemy import null
 from my_app import app, db
 import hashlib
@@ -209,19 +210,16 @@ def insert_book_information(room_book, info_dict):
             db.session.commit()
 
 
-def update_status_room(room):
-    room.status = 'đầy'
+def update_status_room(room, status):
+    room.status = status
     db.session.add(room)
     db.session.commit()
 
 
-def add_bill_dat_phong(room_book, user_id, date_in, date_out, status):
-    room = Room.query.get(room_book.room_id)
-    price_basic = calculate_price_room_basic(room)
-    sum_price = sum_price_basic(date_in, date_out, price_basic)
+def add_bill_dat_phong(room_book, user_id, room_dict, status):
+    sum_price = room_dict.get('sum_price_basic')
 
-    type_book = TypeBook.query.filter(TypeBook.id == room_book.book_id).all()[0].type
-    deposit = tien_coc(sum_price, type_book)
+    deposit = room_dict.get('phi_coc')
 
     bill = Bill(deposit=deposit,
                 customer_id=user_id,
@@ -335,15 +333,37 @@ def is_book_fast(loai_phong, date_in):
 
 
 def cart_stats(cart):
-    total_quantity, total_amount = 0, 0
-
+    total_amount = 0
+    total_quantity = 0
     if cart:
+        total_quantity = len(cart)
         for p in cart.values():
-            total_quantity += p["quantity"]
-            total_amount += p["quantity"] * p["product_price"]
-
+            total_amount += p["phi_coc"]
     return {
-        "total_quantity": total_quantity,
-        "total_amount": total_amount
+        "total_amount": total_amount,
+        "total_quantity": total_quantity
     }
 
+
+def update_receipt_final(cart, phieu):
+    if cart:
+        try:
+            user_id = current_user.id
+
+            for item in cart.values():
+                room_book = insert_book_room(item, user_id)
+                if phieu:
+                    if str(item['id']) in phieu:
+                        info_dict = phieu[str(item['id'])]
+                        insert_book_information(room_book, info_dict)
+                room = Room.query.get(item['id'])
+                update_status_room(room, 'đầy')
+                bill = add_bill_dat_phong(room_book, user_id, item, 'đã cọc')
+                if not bill:
+                    return False
+
+            return True
+        except Exception as ex:
+            print("RECEIPT ERROR: " + str(ex))
+
+    return False

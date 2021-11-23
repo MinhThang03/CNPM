@@ -5,56 +5,93 @@
     <title>
         {% block title %} TRANG CHU {% endblock %}
     </title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-    	<link rel="stylesheet" href="../../static/css/superfish.css">
-	<!-- Owl Slider -->
-	<!-- <link rel="stylesheet" href="../../static/css/owl.carousel.css"> -->
-	<!-- <link rel="stylesheet" href="../../static/css/owl.theme.default.min.css"> -->
-	<!-- Date Picker -->
-	<link rel="stylesheet" href="../../static/css/bootstrap-datepicker.min.css">
-	<!-- CS Select -->
-	<link rel="stylesheet" href="../../static/css/cs-select.css">
-	<link rel="stylesheet" href="../../static/css/cs-skin-border.css">
+    <link rel="stylesheet" href="../../static/css/superfish.css">
+    <!-- Owl Slider -->
+    <!-- <link rel="stylesheet" href="../../static/css/owl.carousel.css"> -->
+    <!-- <link rel="stylesheet" href="../../static/css/owl.theme.default.min.css"> -->
+    <!-- Date Picker -->
+    <link rel="stylesheet" href="../../static/css/bootstrap-datepicker.min.css">
+    <!-- CS Select -->
+    <link rel="stylesheet" href="../../static/css/cs-select.css">
+    <link rel="stylesheet" href="../../static/css/cs-skin-border.css">
 
-	<!-- Themify Icons -->
-	<link rel="stylesheet" href="../../static/css/themify-icons.css">
-	<!-- Flat Icon -->
-	<link rel="stylesheet" href="../../static/css/flaticon.css">
-	<!-- Icomoon -->
-	<link rel="stylesheet" href="../../static/css/icomoon.css">
-	<!-- Flexslider  -->
-	<link rel="stylesheet" href="../../static/css/flexslider.css">
+    <!-- Themify Icons -->
+    <link rel="stylesheet" href="../../static/css/themify-icons.css">
+    <!-- Flat Icon -->
+    <link rel="stylesheet" href="../../static/css/flaticon.css">
+    <!-- Icomoon -->
+    <link rel="stylesheet" href="../../static/css/icomoon.css">
+    <!-- Flexslider  -->
+    <link rel="stylesheet" href="../../static/css/flexslider.css">
 
-	<!-- Style -->
-	<link rel="stylesheet" href="../../static/css/style.css">
+    <!-- Style -->
+    <link rel="stylesheet" href="../../static/css/style.css">
+    <script src="../../static/js/cart.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Start of Async Drift Code -->
+    <script>
+        "use strict";
+
+        !function () {
+            var t = window.driftt = window.drift = window.driftt || [];
+            if (!t.init) {
+                if (t.invoked) return void (window.console && console.error && console.error("Drift snippet included twice."));
+                t.invoked = !0, t.methods = ["identify", "config", "track", "reset", "debug", "show", "ping", "page", "hide", "off", "on"],
+                    t.factory = function (e) {
+                        return function () {
+                            var n = Array.prototype.slice.call(arguments);
+                            return n.unshift(e), t.push(n), t;
+                        };
+                    }, t.methods.forEach(function (e) {
+                    t[e] = t.factory(e);
+                }), t.load = function (t) {
+                    var e = 3e5, n = Math.ceil(new Date() / e) * e, o = document.createElement("script");
+                    o.type = "text/javascript", o.async = !0, o.crossorigin = "anonymous", o.src = "https://js.driftt.com/include/" + n + "/" + t + ".js";
+                    var i = document.getElementsByTagName("script")[0];
+                    i.parentNode.insertBefore(o, i);
+                };
+            }
+        }();
+        drift.SNIPPET_VERSION = '0.3.1';
+        drift.load('wmz4u3g3tu75');
+    </script>
+    <!-- End of Async Drift Code -->
 </head>
 <body>
 
 
-   <div id="fh5co-wrapper">
+<div id="fh5co-wrapper">
     <div id="fh5co-page">
 
 
-
-    {% block header %}
-        {% include 'layout/header.html' %}
-    {% endblock %}
-
+        {% block header %}
+            {% include 'layout/header.html' %}
+        {% endblock %}
 
 
-    {% block content %}
 
-    {% endblock %}
+        {% block content %}
 
-	
+        {% endblock %}
 
-    {% block footer %}
-        {% include 'layout/footer.html' %}
-    {% endblock %}
+
+
+        {% block footer %}
+            {% include 'layout/footer.html' %}
+        {% endblock %}
 
     </div>
     <!-- END fh5co-page -->
@@ -63,30 +100,30 @@
 <!-- END fh5co-wrapper -->
 
 
-	<!-- Javascripts -->
-	<script src="../../static/js/jquery-2.1.4.min.js"></script>
-	<!-- Dropdown Menu -->
-	<script src="../../static/js/hoverIntent.js"></script>
-	<script src="../../static/js/superfish.js"></script>
-	<!-- Bootstrap -->
-	<script src="../../static/js/bootstrap.min.js"></script>
-	<!-- Waypoints -->
-	<script src="../../static/js/jquery.waypoints.min.js"></script>
-	<!-- Counters -->
-	<script src="../../static/js/jquery.countTo.js"></script>
-	<!-- Stellar Parallax -->
-	<script src="../../static/js/jquery.stellar.min.js"></script>
-	<!-- Owl Slider -->
-	<!-- // <script src="../../static/js/owl.carousel.min.js"></script> -->
-	<!-- Date Picker -->
-	<script src="../../static/js/bootstrap-datepicker.min.js"></script>
-	<!-- CS Select -->
-	<script src="../../static/js/classie.js"></script>
-	<script src="../../static/js/selectFx.js"></script>
-	<!-- Flexslider -->
-	<script src="../../static/js/jquery.flexslider-min.js"></script>
+<!-- Javascripts -->
+<script src="../../static/js/jquery-2.1.4.min.js"></script>
+<!-- Dropdown Menu -->
+<script src="../../static/js/hoverIntent.js"></script>
+<script src="../../static/js/superfish.js"></script>
+<!-- Bootstrap -->
+<script src="../../static/js/bootstrap.min.js"></script>
+<!-- Waypoints -->
+<script src="../../static/js/jquery.waypoints.min.js"></script>
+<!-- Counters -->
+<script src="../../static/js/jquery.countTo.js"></script>
+<!-- Stellar Parallax -->
+<script src="../../static/js/jquery.stellar.min.js"></script>
+<!-- Owl Slider -->
+<!-- // <script src="../../static/js/owl.carousel.min.js"></script> -->
+<!-- Date Picker -->
+<script src="../../static/js/bootstrap-datepicker.min.js"></script>
+<!-- CS Select -->
+<script src="../../static/js/classie.js"></script>
+<script src="../../static/js/selectFx.js"></script>
+<!-- Flexslider -->
+<script src="../../static/js/jquery.flexslider-min.js"></script>
 
-	<script src="../../static/js/custom.js"></script>
+<script src="../../static/js/custom.js"></script>
 
 
 </body>

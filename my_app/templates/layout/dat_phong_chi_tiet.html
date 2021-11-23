@@ -90,17 +90,19 @@
 
     <div class="  p-r-50 p-t-72 p-b-50 container informationContainer">
         <div>
-            <form class="login100-form validate-form" action="/book_room/detail" method="post" novalidate>
-                <div class="onOneRow">
+
+            <div class="onOneRow">
                     <span class="login100-form-title p-b-59">
                         Đặt phòng chi tiết
                     </span>
-                    <div class="wrap-login100-form-btn" tyle="text-align: center">
-                        <button class="login100-form-btn">
-                            <a class="/book_room?type=fast" href="/RegisterRoomDetails"> Đặt phòng nhanh</a>
-                        </button>
-                    </div>
+                <div class="wrap-login100-form-btn" tyle="text-align: center">
+                    <button class="login100-form-btn">
+                        <a class="/book_room?type=fast" href="/RegisterRoomDetails"> Đặt phòng nhanh</a>
+                    </button>
                 </div>
+            </div>
+            <form class="login100-form validate-form" action="/book_room/detail" method="post" novalidate>
+
 
                 <div class="a-col wrap-input100 validate-input ">
                     <span class="label-input100 ">Loại phòng</span>
@@ -133,7 +135,7 @@
                     <span class="focus-input100"></span>
                 </div>
 
-            <div class="wrap-input100 validate-input" data-validate="Name is required">
+                <div class="wrap-input100 validate-input" data-validate="Name is required">
                     <span class="label-input100">Check out</span>
                     <input type="date" name="date_check_out" class="input100"/>
                     <span class="focus-input100"></span>
@@ -159,7 +161,7 @@
                         <div class="wrap-login100-form-btn">
                             <div class="login100-form-bgbtn"></div>
                             <button class="login100-form-btn" type="submit">
-                                <a  class="colorWhite">Tiếp tục</a>
+                                <a class="colorWhite">Tiếp tục</a>
                             </button>
                         </div>
                     </div>

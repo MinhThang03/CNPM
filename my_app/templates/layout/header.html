@@ -21,8 +21,8 @@
                 <nav id="fh5co-menu-wrap" role="navigation">
                     <ul class="sf-menu" id="fh5co-primary-menu">
                         {% if current_user.is_authenticated %}
-                            <li><a href="">Đang chờ thanh toán... <span class="badge badge-info"
-                                                                             id="cartCounter">0</span></a>
+                            <li><a href="/cart">Đang chờ thanh toán... <span class="badge badge-info"
+                                                                             id="cartCounter">{{ cart_stats.total_quantity }}</span></a>
                             </li>
                         {% endif %}
 

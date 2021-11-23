@@ -4,7 +4,7 @@ from typing import Union
 
 from flask import render_template, request, session, jsonify, url_for
 from sqlalchemy import null
-from my_app import app, my_login, utils, mail, ROOM_KEY, PHIEU_KEY
+from my_app import app, my_login, utils, mail, ROOM_KEY, PHIEU_KEY, CART_KEY
 from my_app.models import User
 from flask_login import login_user
 import hashlib
@@ -193,7 +193,6 @@ def book_room():
             return render_template('layout/dat_phong_chi_tiet.html', features=features, list=list_loai_phong, msg=msg)
 
 
-
 @app.route('/book_room/fast', methods=['GET', 'POST'])
 def book_room_fast():
     if (not current_user.is_authenticated):
@@ -205,7 +204,7 @@ def book_room_fast():
         date_check_in = request.form.get('date_check_in')
         msg = ''
 
-        if not utils.is_book_fast(loai_phong,date_check_in):
+        if not utils.is_book_fast(loai_phong, date_check_in):
             msg = "Dữ liệu không hợp lệ"
             list_loai_phong = utils.get_list_loai_phong()
             return render_template('layout/dat_phong_nhanh.html', msg=msg, list=list_loai_phong)
@@ -228,7 +227,7 @@ def book_room_fast():
                 count_people = max_people - num_people
                 loai_khach = CategoryCustomer.query.all()
                 return render_template('layout/phieu_thue_phong_information.html', num_people=num_people,
-                                   count_people=count_people, loai_khach=loai_khach)
+                                       count_people=count_people, loai_khach=loai_khach)
     return redirect('/book_room?type=fast')
 
 
@@ -262,7 +261,7 @@ def book_room_information():
                         'address': addres,
                         'category_customer_id': loai_khach
                     }
-            info_dict[str(room.id)] =  info
+            info_dict[str(room.id)] = info
 
             session[PHIEU_KEY] = info_dict
 
@@ -280,7 +279,6 @@ def book_room_confirm():
         return render_template("layout/loginUser.html")
 
     if request.method == 'POST':
-
         return redirect('/book_room?type=fast')
 
 
@@ -291,28 +289,54 @@ def book_room_finish():
         return render_template("layout/loginUser.html")
 
     if request.method == 'POST':
-        room_dict = session.get(ROOM_KEY)
-        user_id = current_user.id
-        room = Room.query.get(room_dict.get('id'))
+        type = request.form.get('type')
+        if type == 'online_fast':
+            room_dict = session.get(ROOM_KEY)
+            user_id = current_user.id
+            room = Room.query.get(room_dict.get('id'))
 
-        room_book = utils.insert_book_room(room_dict,user_id)
-        info_dict = session.get(PHIEU_KEY).get(str(room.id))
+            room_book = utils.insert_book_room(room_dict, user_id)
+            info_dict = {}
+            if session.get(PHIEU_KEY):
+                if str(room.id) in session.get(PHIEU_KEY):
+                    info_dict = session.get(PHIEU_KEY)[str(room.id)]
 
-        date_in = datetime.datetime.strptime(room_dict.get('date_in'), '%Y-%m-%d').date()
-        date_out = date_in + datetime.timedelta(days=1)
 
-        if room_book and info_dict:
-            utils.insert_book_information(room_book, info_dict)
-            utils.update_status_room(room)
-            bill = utils.add_bill_dat_phong(room_book, user_id, date_in, date_out,'đã cọc')
-            session.pop(PHIEU_KEY, None)
-        return render_template('layout/thue_phong_nhanh_finnal.html')
+            if room_book:
+                if info_dict:
+                    utils.insert_book_information(room_book, info_dict)
+                    temp = session.get(PHIEU_KEY)
+                    temp.pop(str(room.id),None)
+                    session[PHIEU_KEY] = temp
+
+                utils.update_status_room(room, 'đầy')
+                bill = utils.add_bill_dat_phong(room_book, user_id, room_dict, 'đã cọc')
+                session.pop(PHIEU_KEY, None)
+            return render_template('layout/thue_phong_nhanh_finnal.html')
+        else:
+            cart = session.get(CART_KEY)
+            if not cart:
+               cart = {}
+
+            room_id = session.get(ROOM_KEY).get('id')
+
+            msg = ''
+            if str(room_id) in cart:
+                msg = 'Phòng này đã được chọn'
+            else:  # san pham chua bo vao gio
+                cart[str(room_id)] = session.get(ROOM_KEY)
+                msg = 'Đã thêm phòng vào trang thanh toán. Bạn có thể tiếp tục đặt phòng hoặc đến trang thanh toán để hoàn thiện đặt phòng'
+
+            session[CART_KEY] = cart
+            return render_template('layout/thue_phong_detail_final.html', msg=msg)
+
     return redirect('/book_room?type=fast')
 
-#-------------------------END BOOK PHONG NHANH-------------------------------
+
+# -------------------------END BOOK PHONG NHANH-------------------------------
 
 
-#----------------------BOOK DETAIL------------------------------
+# ----------------------BOOK DETAIL------------------------------
 @app.route('/book_room/detail', methods=['POST'])
 def book_room_detail():
     if not current_user.is_authenticated:
@@ -329,12 +353,12 @@ def book_room_detail():
             msg = 'Dữ liệu không hợp lệ'
             return redirect('/book_room?type_book=online_detail&msg=' + msg)
 
-        rooms = utils.get_list_room_arg(loai_phong,kieu_phong,loai_giuong,view)
+        rooms = utils.get_list_room_arg(loai_phong, kieu_phong, loai_giuong, view)
         if len(rooms) != 0:
-            room_dto_dict = utils.covert_room_bean(rooms,date_in,date_out, 'online_detail')
+            room_dto_dict = utils.covert_room_bean(rooms, date_in, date_out, 'online_detail')
             session['list_current_room'] = room_dto_dict
 
-        return render_template('layout/list_room.html', rooms = room_dto_dict)
+        return render_template('layout/list_room.html', rooms=room_dto_dict)
     return redirect('/book_room?type=detail')
 
 
@@ -362,27 +386,77 @@ def add_to_cart():
 
     data = request.json
 
-    product_id = str(data["product_id"])
+    room_id = str(data["room_id"])
 
-    if product_id in cart: # san pham da tung bo vao gio
-        p = cart[product_id]
-        p['quantity'] = p['quantity'] + 1
-    else: # san pham chua bo vao gio
-        cart[product_id] = {
-            "product_id": data["product_id"],
-            "product_name": data["name"],
-            "product_price": data["price"],
-            "quantity": 1
-        }
-
+    if room_id in cart:  # san pham da tung bo vao gio
+        p = cart[room_id]
+        p['msg'] = 'Phòng này đã được chọn'
+    else:  # san pham chua bo vao gio
+        cart[room_id] = session.get(ROOM_KEY)
 
     session[CART_KEY] = cart
 
     return jsonify(utils.cart_stats(cart))
 
 
+@app.context_processor
+def common_context():
 
-#---------------------END BOOK DETAIL---------------------------------
+    cart_stats = utils.cart_stats(session.get(CART_KEY))
+
+    return {'cart_stats': cart_stats}
+
+
+@app.route("/cart")
+def cart():
+    return render_template("layout/list_cart.html")
+
+
+@app.route("/api/delete-cart-item/<room_id>", methods=['delete'])
+def delete_cart_item(room_id):
+    cart = session.get(CART_KEY)
+    if cart:
+        if str(room_id) in cart:
+            del cart[room_id]
+            session[CART_KEY] = cart
+
+        phieu = session.get(PHIEU_KEY)
+        if phieu:
+            if str(room_id) in session.get(PHIEU_KEY):
+                del phieu[room_id]
+                session[PHIEU_KEY] = phieu
+
+        return jsonify({
+            "error_code": 200,
+            "cart_stats": utils.cart_stats(cart)
+        })
+
+    return jsonify({
+        "error_code": 404
+    })
+
+# ---------------------END BOOK DETAIL---------------------------------
+
+
+#-------------------- THANH TOAN ONLINE ---------------------
+@app.route('/api/pay', methods=['post'])
+def pay():
+    cart = session.get(CART_KEY)
+    phieu = session.get(PHIEU_KEY)
+    if cart:
+        if utils.update_receipt_final(cart, phieu):
+            del session[CART_KEY]
+
+            return jsonify({
+                "error_code": 200
+            })
+
+    return jsonify({
+        "error_code": 404
+    })
+
+
+
 
 @app.route("/userInformation")
 def UserInformationControll():

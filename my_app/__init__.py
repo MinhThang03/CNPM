@@ -28,3 +28,4 @@ my_login = LoginManager(app=app)
 
 ROOM_KEY = "room"
 PHIEU_KEY = "phieu_thue"
+CART_KEY = "cart"

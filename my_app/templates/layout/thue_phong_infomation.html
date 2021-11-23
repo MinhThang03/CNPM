@@ -95,23 +95,14 @@
 
                 <div class="onOneRow">
                     <span class="login100-form-title p-b-59">
-                        Đặt phòng nhanh
+                        Thông tin đặt phòng
 
                     </span>
-                    <div class="wrap-login100-form-btn" tyle="text-align: center">
-                        <button class="login100-form-btn">
-                            <a class="colorWhite" href="/RegisterRoomDetails"> Đặt phòng theo yêu cầu</a>
-                        </button>
-                    </div>
                 </div>
 
-                <div class="onOneRow">
-                    <span><small
-                            style="font-size: 16px">Không cần thanh toán trước - thời gian ở tối đa chỉ 1 ngày</small></span>
-                </div>
 
                 <div class="a-col wrap-input100 validate-input ">
-                    <span class="label-input100 ">{{ room.get('name')}}</span>
+                    <span class="label-input100 ">{{ room.get('name') }}</span>
                 </div>
 
                 <div class="a-col wrap-input100 validate-input ">
@@ -157,18 +148,35 @@
                         </div>
                     </div>
 
-                    <div class="container-login100-form-btn">
-                        <div class="wrap-login100-form-btn">
-                            <div class="login100-form-bgbtn"></div>
-                            <button class="login100-form-btn" type="submit">
-                                <a class="colorWhite">Đặt phòng</a>
-                            </button>
+                    {% if room.get('type_book') == 'online_fast' %}
+                        <input name="type" value="online_fast" hidden>
+                        <div class="container-login100-form-btn">
+                            <div class="wrap-login100-form-btn">
+                                <div class="login100-form-bgbtn"></div>
+                                <button class="login100-form-btn" type="submit">
+                                    <a class="colorWhite">Đặt phòng</a>
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    {% endif %}
+
+                    {% if room.get('type_book') == 'online_detail' %}
+                        <input name="type" value="online_detail" hidden>
+                        <div class="container-login100-form-btn">
+                            <div class="wrap-login100-form-btn">
+                                <div class="login100-form-bgbtn"></div>
+                                <button class="login100-form-btn">
+                                    <span class="colorWhite">Đặt phòng</span>
+                                </button>
+                            </div>
+                        </div>
+                    {% endif %}
                 </div>
 
 
             </form>
+
+
         </div>
     </div>
 
