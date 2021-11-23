@@ -68,7 +68,7 @@ class User(db.Model, UserMixin):
 class CategoryCustomer(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     type = Column(String(20), nullable=False)
-    percent = Column(Integer, default=0)
+    percent = Column(Float, default=0)
     book_information = relationship('BookInformation', backref="categoryCustomer", lazy=True)
 
     def __str__(self):
@@ -79,18 +79,27 @@ class CategoryRoom(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     number_people = Column(Integer, unique=True, nullable=False)
     max_people = Column(Integer)
-    surcharge = Column(Integer)
+    surcharge = Column(Float)
+    price = Column(Float, default=0)
     room = relationship('Room', backref="categoryRoom", lazy=True)
 
     def __str__(self):
         return str(self.number_people)
 
+class GroupLabelRoom(db.Model):
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    group_name = Column(String(60), nullable=False)
+    labelRoom = relationship('LabelRoom', backref="groupLabelRoom", lazy=True)
+
+    def __str__(self):
+        return str(self.group_name)
 
 class LabelRoom(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     description = Column(String(60), nullable=False)
     percent = Column(Float, default=0)
     typeRoom = relationship('TypeRoom', backref="labelRoom", lazy=True)
+    group_id = Column(Integer, ForeignKey(GroupLabelRoom.id), nullable=False)
 
     def __str__(self):
         return self.description
@@ -99,12 +108,11 @@ class LabelRoom(db.Model):
 class Room(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(20), nullable=False)
-    image = Column(String(100), nullable=True)
+    image = Column(String(300), nullable=True)
     status = Column(String(20))
     category_id = Column(Integer, ForeignKey(CategoryRoom.id), nullable=False)
     room_book = relationship('RoomBook', backref="room", lazy=True)
     typeRoom = relationship('TypeRoom', backref="room", lazy=True)
-
     def __str__(self):
         return self.name
 
@@ -122,6 +130,7 @@ class TypeBook(db.Model):
 class RoomBook(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     date = Column(DateTime)
+    date_out = Column(DateTime)
     status = Column(String(20))
     room_id = Column(Integer, ForeignKey(Room.id))
     user_id = Column(Integer, ForeignKey(User.id), nullable=False)
@@ -156,9 +165,12 @@ class TypeRoom(db.Model):
 
 class Bill(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
+    sum_price = Column(Float, default=0)
     costs = Column(Float, default=0)
     deposit = Column(Float, default=0)
+    phi_phu = Column(Float, default=0)
     datetime = Column(DateTime, default=datetime.now())
+    status = Column(String(60))
     room_number_date = Column(Integer)
     customer_id = Column(Integer, ForeignKey(User.id), nullable=False)
     employee_id = Column(Integer, ForeignKey(User.id))

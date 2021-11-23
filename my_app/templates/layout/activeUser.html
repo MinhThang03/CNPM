@@ -135,9 +135,12 @@
                         <div class="slider-text-inner js-fullheight">
                             <div class="desc">
                                 <p><span>UTE Hotel</span></p>
-                                <h2> Đăng ký thành công</h2>
+                                {% if msg %}
+                                     <h2> {{ msg }}</h2>
+                                {% endif %}
+
                                 <p>
-                                    <a href="#" class="btn btn-primary btn-lg">Login</a>
+                                    <a href="/user-login" class="btn btn-primary btn-lg">Login</a>
                                 </p>
                             </div>
                         </div>

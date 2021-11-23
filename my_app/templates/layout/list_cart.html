@@ -1,0 +1,88 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}UTE HOTEL{% endblock %}
+
+
+{% block content %}
+
+
+    <link rel="stylesheet" type="text/css" href="../../static/css/LoginUser.css">
+
+    <style>
+        container {
+            width: 100%;
+        }
+
+        @media (min-width: 576px) {
+            .container {
+                max-width: 540px
+            }
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                max-width: 720px
+            }
+        }
+
+        @media (min-width: 992px) {
+            .container {
+                max-width: 960px
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1140px
+            }
+        }
+
+        .container-fluid {
+            width: 100%;
+            margin-right: auto;
+            margin-left: auto
+        }
+
+        .row {
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            margin-right: -15px;
+            margin-left: -15px
+        }
+    </style>
+    <div id="fh5co-blog-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="section-title text-center">
+                        <h2>Danh sách đặt phòng chờ thanh toán</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                {% for item in rooms.values() %}
+                    <div class="col-md-4">
+                        <div class="blog-grid" style="background-image: url(../../static/images/image-1.jpg);">
+                        </div>
+
+                        <div class="desc">
+{#                            <h3>{{ item.name }}</h3>#}
+{#                            <h3>Số người: {{ item.number_people }}</h3>#}
+{#                            <h3>Kiểu phòng: {{ item.get('Kiểu phòng') }}</h3>#}
+{#                            <h3>Loại giường: {{ item.get('Loại giường') }}</h3>#}
+{#                            <h3>Tầm nhìn: {{ item.get('Tầm nhìn') }}</h3>#}
+{#                            <h3>Giá/1 ngày: {{ item.get('price') }}</h3>#}
+                        </div>
+                        <div class="desc">
+                            <h3><a href="/book_room/lap_phieu?room_id={{ item.id }}">Thuê phòng</a></h3>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <script src="../../static/js/bootstrap.min.js"></script>
+{% endblock %}

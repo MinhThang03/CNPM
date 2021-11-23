@@ -3,7 +3,8 @@ from flask_admin import BaseView, expose
 from flask_login import logout_user, current_user
 from flask import redirect
 from my_app import db, admin
-from my_app.models import Room, CategoryRoom, User, Role, CategoryCustomer, LabelRoom, RoomBook, TypeRoom, BookInformation, TypeBook, Bill
+from my_app.models import Room, CategoryRoom, User, Role, CategoryCustomer, LabelRoom, RoomBook, TypeRoom, \
+    BookInformation, TypeBook, Bill, GroupLabelRoom
 
 
 class AuthenticatedView(ModelView):
@@ -56,6 +57,10 @@ class BookInformationView(AuthenticatedView):
 class TypeBookView(AuthenticatedView):
     form_excluded_columns = ('room_book')
 
+class GroupLabelRoomView(AuthenticatedView):
+    form_excluded_columns = ('labelRoom')
+
+
 class BillView(AuthenticatedView):
     can_export = True
     can_view_details = True
@@ -87,14 +92,15 @@ class LogoutView(BaseView):
 admin.add_view(UserView(User, db.session,  name = 'Người dùng' , category='Quản lý người dùng'))
 admin.add_view(RoleView(Role, db.session , name = 'Quyền', category='Quản lý người dùng'))
 admin.add_view(CategoryCustomerView(CategoryCustomer, db.session , name = 'Loại khách', category='Quản lý người dùng'))
-admin.add_view(RoomModelView(Room, db.session, name='Phòng', category='Quản Lý phòng' ))
-admin.add_view(LabelRoomView(LabelRoom, db.session, name='Nhãn mô tả', category='Quản Lý phòng'))
-admin.add_view(TypeRoomView(TypeRoom, db.session, name ='Đặc tính phòng', category='Quản Lý phòng'))
-admin.add_view(CategoryRoomView(CategoryRoom, db.session, name='Loại phòng', category='Quản Lý phòng'))
+admin.add_view(RoomModelView(Room, db.session, name='Phòng', category='Quản lý phòng' ))
+admin.add_view(LabelRoomView(LabelRoom, db.session, name='Nhãn mô tả', category='Quản lý phòng'))
+admin.add_view(TypeRoomView(TypeRoom, db.session, name ='Đặc tính phòng', category='Quản lý phòng'))
+admin.add_view(CategoryRoomView(CategoryRoom, db.session, name='Loại phòng', category='Quản lý phòng'))
 admin.add_view(RoomBookView(RoomBook, db.session , name='Phiếu đặt phòng', category='Quản lý đặt phòng'))
 admin.add_view(BookInformationView(BookInformation, db.session, name = "Thông tin phiếu đặt phòng", category='Quản lý đặt phòng'))
 admin.add_view(TypeBookView(TypeBook, db.session, name = 'Kiểu đặt phòng', category='Quản lý đặt phòng'))
 admin.add_view(BillView(Bill, db.session, name = 'Hóa đơn', category='Thống kê'))
+admin.add_view(GroupLabelRoomView(GroupLabelRoom, db.session, name='Loại nhãn phòng', category='Quản lý phòng'))
 # admin.add_view(StatsView(name="Thong ke doanh thu"))
 
 

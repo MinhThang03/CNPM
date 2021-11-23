@@ -1,0 +1,174 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}UTE HOTEL{% endblock %}
+
+
+{% block content %}
+
+
+    <link rel="stylesheet" type="text/css" href="../../static/css/LoginUser.css">
+
+    <style>
+        container {
+            width: 100%;
+        }
+
+        @media (min-width: 576px) {
+            .container {
+                max-width: 540px
+            }
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                max-width: 720px
+            }
+        }
+
+        @media (min-width: 992px) {
+            .container {
+                max-width: 960px
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1140px
+            }
+        }
+
+        .container-fluid {
+            width: 100%;
+            margin-right: auto;
+            margin-left: auto
+        }
+
+        .row {
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            margin-right: -15px;
+            margin-left: -15px
+        }
+    </style>
+    <style>
+        .informationContainer {
+            padding: 0px !important;
+            display: flex;
+            justify-content: center;
+            justify-items: center;
+            margin-top: 36px;
+            margin-bottom: 36px;
+            /* width: auto; */
+            /* height: 30px !important; */
+        }
+
+        .onOneRow {
+            display: flex;
+            width: 100%;
+            margin: 20px auto;
+        }
+
+        .ColorTextGray {
+            color: #999999 !important;
+
+        }
+
+        .font8rem {
+            font-size: 8rem;
+        }
+
+        .colorWhite {
+            color: white;
+            text-decoration: none
+        }
+
+
+    </style>
+
+
+    <div class="  p-r-50 p-t-72 p-b-50 container informationContainer">
+        <div>
+            <form class="login100-form validate-form" action="/book_room/detail" method="post" novalidate>
+                <div class="onOneRow">
+                    <span class="login100-form-title p-b-59">
+                        Đặt phòng chi tiết
+                    </span>
+                    <div class="wrap-login100-form-btn" tyle="text-align: center">
+                        <button class="login100-form-btn">
+                            <a class="/book_room?type=fast" href="/RegisterRoomDetails"> Đặt phòng nhanh</a>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="a-col wrap-input100 validate-input ">
+                    <span class="label-input100 ">Loại phòng</span>
+                    <section class="backgroudP">
+                        <select class="cs-select cs-skin-border widthInput" name="loai_phong">
+                            <option value="" disabled selected>Chọn loại phòng</option>
+                            {% for item in list %}
+                                <option value="{{ item.id }}">phòng {{ item.number_people }} người</option>
+                            {% endfor %}
+                        </select>
+                    </section>
+                </div>
+                {% for feature in features %}
+                    <div class="a-col wrap-input100 validate-input ">
+                        <span class="label-input100 ">{{ feature.get('name') }}</span>
+                        <section class="backgroudP">
+                            <select class="cs-select cs-skin-border widthInput" name="{{ feature.get('name') }}">
+                                <option value="" disabled selected>Chọn loại phòng</option>
+                                {% for item in feature.get('value') %}
+                                    <option value="{{ item.id }}">{{ item.description }}</option>
+                                {% endfor %}
+                            </select>
+                        </section>
+                    </div>
+                {% endfor %}
+
+                <div class="wrap-input100 validate-input" data-validate="Name is required">
+                    <span class="label-input100">Check in</span>
+                    <input type="date" name="date_check_in" class="input100"/>
+                    <span class="focus-input100"></span>
+                </div>
+
+            <div class="wrap-input100 validate-input" data-validate="Name is required">
+                    <span class="label-input100">Check out</span>
+                    <input type="date" name="date_check_out" class="input100"/>
+                    <span class="focus-input100"></span>
+                </div>
+
+                <div hidden class="wrap-input100 validate-input" data-validate="Name is required">
+                    <input type="text" name="type_book" class="input100" value="online_detail"/>
+                </div>
+
+
+                {% if msg %}
+
+                    <div class="wrap-input100 validate-input alert alert-danger minwith420">
+                        <span class="label-input100">{{ msg }}</span>
+                        <span class="focus-input100"></span>
+                    </div>
+                {% endif %}
+
+
+                <div class="onOneRow">
+
+                    <div class="container-login100-form-btn" style="justify-content: right !important;">
+                        <div class="wrap-login100-form-btn">
+                            <div class="login100-form-bgbtn"></div>
+                            <button class="login100-form-btn" type="submit">
+                                <a  class="colorWhite">Tiếp tục</a>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+
+    <script src="../../static/js/bootstrap.min.js"></script>
+{% endblock %}

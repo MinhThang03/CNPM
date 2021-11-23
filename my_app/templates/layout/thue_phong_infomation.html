@@ -1,0 +1,176 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}UTE HOTEL{% endblock %}
+
+
+{% block content %}
+
+
+    <link rel="stylesheet" type="text/css" href="../../static/css/LoginUser.css">
+
+    <style>
+        container {
+            width: 100%;
+        }
+
+        @media (min-width: 576px) {
+            .container {
+                max-width: 540px
+            }
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                max-width: 720px
+            }
+        }
+
+        @media (min-width: 992px) {
+            .container {
+                max-width: 960px
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1140px
+            }
+        }
+
+        .container-fluid {
+            width: 100%;
+            margin-right: auto;
+            margin-left: auto
+        }
+
+        .row {
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            margin-right: -15px;
+            margin-left: -15px
+        }
+    </style>
+    <style>
+        .informationContainer {
+            padding: 0px !important;
+            display: flex;
+            justify-content: center;
+            justify-items: center;
+            margin-top: 36px;
+            margin-bottom: 36px;
+            /* width: auto; */
+            /* height: 30px !important; */
+        }
+
+        .onOneRow {
+            display: flex;
+            width: 100%;
+            margin: 20px auto;
+        }
+
+        .ColorTextGray {
+            color: #999999 !important;
+
+        }
+
+        .font8rem {
+            font-size: 8rem;
+        }
+
+        .colorWhite {
+            color: white;
+            text-decoration: none
+        }
+
+
+    </style>
+
+
+    <div class="  p-r-50 p-t-72 p-b-50 container informationContainer">
+        <div>
+            <form class="login100-form validate-form" action="/book_room/finish" method="post">
+
+
+                <div class="onOneRow">
+                    <span class="login100-form-title p-b-59">
+                        Đặt phòng nhanh
+
+                    </span>
+                    <div class="wrap-login100-form-btn" tyle="text-align: center">
+                        <button class="login100-form-btn">
+                            <a class="colorWhite" href="/RegisterRoomDetails"> Đặt phòng theo yêu cầu</a>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="onOneRow">
+                    <span><small
+                            style="font-size: 16px">Không cần thanh toán trước - thời gian ở tối đa chỉ 1 ngày</small></span>
+                </div>
+
+                <div class="a-col wrap-input100 validate-input ">
+                    <span class="label-input100 ">{{ room.get('name')}}</span>
+                </div>
+
+                <div class="a-col wrap-input100 validate-input ">
+                    <span class="label-input100 ">Ảnh phòng</span>
+                </div>
+
+                {% for feature in features %}
+                    <div class="a-col wrap-input100 validate-input ">
+                        <span class="label-input100 ">{{ feature.get('name') }}: {{ feature.get('value') }} </span>
+                    </div>
+                {% endfor %}
+
+                <div class="a-col wrap-input100 validate-input ">
+                    <span class="label-input100 ">Giá cơ bản / 1 ngày: {{ room.get('price') }}$ </span>
+                </div>
+
+                <div class="a-col wrap-input100 validate-input ">
+                    <span class="label-input100 ">Ngày nhận phòng: {{ room.get('date_in') }} </span>
+                </div>
+
+                <div class="a-col wrap-input100 validate-input ">
+                    <span class="label-input100 ">Ngày dự kiến trả phòng: {{ room.get('date_out') }} </span>
+                </div>
+
+                <div class="a-col wrap-input100 validate-input ">
+                    <span class="label-input100 ">Tổng tiền cơ bản: {{ room.get('sum_price_basic') }}$ </span>
+                </div>
+
+                <div class="a-col wrap-input100 validate-input ">
+                    <span class="label-input100 ">Cần thanh toán trước: {{ room.get('phi_coc') }}$ </span>
+                </div>
+
+
+                <div class="onOneRow">
+
+
+                    <div class="container-login100-form-btn">
+                        <div class="wrap-login100-form-btn">
+                            <div class="login100-form-bgbtn"></div>
+                            <button class="login100-form-btn">
+                                <a class="colorWhite">Quay lại</a>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="container-login100-form-btn">
+                        <div class="wrap-login100-form-btn">
+                            <div class="login100-form-bgbtn"></div>
+                            <button class="login100-form-btn" type="submit">
+                                <a class="colorWhite">Đặt phòng</a>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+
+    <script src="../../static/js/bootstrap.min.js"></script>
+{% endblock %}

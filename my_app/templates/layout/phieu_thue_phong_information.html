@@ -1,0 +1,218 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}UTE HOTEL{% endblock %}
+
+
+{% block content %}
+
+
+    <link rel="stylesheet" type="text/css" href="../../static/css/LoginUser.css">
+
+    <style>
+        container {
+            width: 100%;
+        }
+
+        @media (min-width: 576px) {
+            .container {
+                max-width: 540px
+            }
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                max-width: 720px
+            }
+        }
+
+        @media (min-width: 992px) {
+            .container {
+                max-width: 960px
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1140px
+            }
+        }
+
+        .container-fluid {
+            width: 100%;
+            margin-right: auto;
+            margin-left: auto
+        }
+
+        .row {
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            margin-right: -15px;
+            margin-left: -15px
+        }
+    </style>
+    <style>
+        .informationContainer {
+            padding: 0px !important;
+            display: flex;
+            justify-content: center;
+            justify-items: center;
+            margin-top: 36px;
+            margin-bottom: 36px;
+            /* width: auto; */
+            /* height: 30px !important; */
+        }
+
+        .onOneRow {
+            display: flex;
+            width: 100%;
+            margin: 20px auto;
+        }
+
+        .ColorTextGray {
+            color: #999999 !important;
+
+        }
+
+        .font8rem {
+            font-size: 8rem;
+        }
+
+        .colorWhite {
+            color: white;
+            text-decoration: none
+        }
+
+
+    </style>
+
+
+    <div class="  p-r-50 p-t-72 p-b-50 container informationContainer">
+        <div>
+            <form class="login100-form validate-form" method="post" action="/book_room/information">
+
+
+                <div class="onOneRow">
+                    <span class="login100-form-title p-b-59">
+                        Danh sách khách trong phòng - bạn có thể bỏ qua bước này
+                    </span>
+                </div>
+
+                <div class="onOneRow">
+                    <span class="login100-form-title p-b-59">
+                        Số lượng khách tiêu chuẩn
+                    </span>
+                </div>
+
+                {% for i in range(num_people) %}
+                    <div class="onOneRow">
+                        <div class="wrap-input100 validate-input">
+                            <span class="label-input100 font8rem">{{ i + 1 }}</span>
+                        </div>
+                        <div class="wrap-input100 validate-input">
+                            <span class="label-input100">Khách hàng</span>
+                            <input class="input100" type="text" name="customer_name{{ i }}" placeholder="Khách hàng...">
+                            <span class="focus-input100"></span>
+                        </div>
+
+                        <div class="a-col wrap-input100 validate-input ">
+                            <span class="label-input100 ">Loại khách</span>
+                            <section class="backgroudP">
+                                <select class="cs-select cs-skin-border widthInput" name="loai_khach{{ i }}">
+                                    <option value="" disabled selected>Chọn loại khách</option>
+                                    {% for item in loai_khach %}
+                                        <option value="{{ item.id }}">{{ item.type }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </section>
+                        </div>
+
+                        <div class="wrap-input100 validate-input" >
+                            <span class="label-input100">CMND</span>
+                            <input style="z-index: -1" class="input100" type="text" name="CMND{{ i }}" placeholder="CMNN...">
+                            <span class="focus-input100"></span>
+                        </div>
+
+                        <div class="wrap-input100 validate-input">
+                            <span class="label-input100">Địa Chỉ</span>
+                            <input class="input100" type="text" name="address{{ i }}" placeholder="Địa chỉ...">
+                            <span class="focus-input100"></span>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            <div class="onOneRow">
+                    <span class="login100-form-title p-b-59">
+                        Số lượng khách phụ thêm - có thu thêm phí phụ
+                    </span>
+                </div>
+
+                {% for i in range(count_people) %}
+                    <div class="onOneRow">
+                        <div class="wrap-input100 validate-input">
+                            <span class="label-input100 font8rem">{{ i + num_people + 1 }}</span>
+                        </div>
+                        <div class="wrap-input100 validate-input">
+                            <span class="label-input100">Khách hàng</span>
+                            <input class="input100" type="text" name="customer_name{{ i+num_people }}" placeholder="Khách hàng...">
+                            <span class="focus-input100"></span>
+                        </div>
+
+                         <div class="a-col wrap-input100 validate-input ">
+                            <span class="label-input100 ">Loại khách</span>
+                            <section class="backgroudP">
+                                <select  class="cs-select cs-skin-border widthInput" name="loai_khach{{ i+num_people }}">
+                                    <option value="" disabled selected>Chọn loại khách</option>
+                                    {% for item in loai_khach %}
+                                        <option value="{{ item.id }}">{{ item.type }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </section>
+                        </div>
+
+                        <div class="wrap-input100 validate-input">
+                            <span class="label-input100">CMNN</span>
+                            <input class="input100" type="text" name="CMND{{ i+num_people }}" placeholder="CMNN...">
+                            <span class="focus-input100"></span>
+                        </div>
+
+                        <div class="wrap-input100 validate-input">
+                            <span class="label-input100">Địa Chỉ</span>
+                            <input class="input100" type="text" name="address{{ i+num_people }}" placeholder="Địa chỉ...">
+                            <span class="focus-input100"></span>
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <div class="onOneRow">
+
+                    <div class="container-login100-form-btn">
+                        <div class="wrap-login100-form-btn">
+                            <div class="login100-form-bgbtn"></div>
+                            <button class="login100-form-btn">
+                                <a class="colorWhite" href="/book_room?type=fast"> Quay lại</a>
+                            </button>
+                        </div>
+                    </div>
+
+
+                    <div class="container-login100-form-btn">
+                        <div class="wrap-login100-form-btn">
+                            <div class="login100-form-bgbtn"></div>
+                            <button class="login100-form-btn" type="submit">
+                                <a class="colorWhite">Tiếp tục</a>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+
+    <script src="../../static/js/bootstrap.min.js"></script>
+{% endblock %}
