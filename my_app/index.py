@@ -1,4 +1,5 @@
-import datetime
+import bdb
+
 import math
 from typing import Union
 
@@ -9,6 +10,7 @@ from my_app.models import User
 from flask_login import login_user
 import hashlib
 from admin import *
+import datetime
 from flask_mail import Message
 
 
@@ -282,7 +284,6 @@ def book_room_confirm():
         return redirect('/book_room?type=fast')
 
 
-
 @app.route('/book_room/finish', methods=['POST'])
 def book_room_finish():
     if (not current_user.is_authenticated):
@@ -301,12 +302,11 @@ def book_room_finish():
                 if str(room.id) in session.get(PHIEU_KEY):
                     info_dict = session.get(PHIEU_KEY)[str(room.id)]
 
-
             if room_book:
                 if info_dict:
                     utils.insert_book_information(room_book, info_dict)
                     temp = session.get(PHIEU_KEY)
-                    temp.pop(str(room.id),None)
+                    temp.pop(str(room.id), None)
                     session[PHIEU_KEY] = temp
 
                 utils.update_status_room(room, 'đầy')
@@ -316,7 +316,7 @@ def book_room_finish():
         else:
             cart = session.get(CART_KEY)
             if not cart:
-               cart = {}
+                cart = {}
 
             room_id = session.get(ROOM_KEY).get('id')
 
@@ -401,7 +401,6 @@ def add_to_cart():
 
 @app.context_processor
 def common_context():
-
     cart_stats = utils.cart_stats(session.get(CART_KEY))
 
     return {'cart_stats': cart_stats}
@@ -435,10 +434,11 @@ def delete_cart_item(room_id):
         "error_code": 404
     })
 
+
 # ---------------------END BOOK DETAIL---------------------------------
 
 
-#-------------------- THANH TOAN ONLINE ---------------------
+# -------------------- THANH TOAN ONLINE ---------------------
 @app.route('/api/pay', methods=['post'])
 def pay():
     cart = session.get(CART_KEY)
@@ -456,7 +456,61 @@ def pay():
     })
 
 
+# ---------------------- ADMIN -------------------
+@app.route('/admin/confirm_check_in', methods=['post'])
+def admin_confirm_check_in():
+    if not current_user.is_authenticated:
+        return render_template("layout/loginUser.html")
 
+    room_book_id = request.args.get('room_book_id')
+    room = Room.query.get(RoomBook.query.get(room_book_id).room_id)
+    numbers_people, max_people = utils.find_num_people_by_room(room)
+    for i in range(max_people):
+        info_if = request.form.get('book_info_id' + str(i))
+        cus_name = request.form.get('customer_name' + str(i))
+        cmnd = request.form.get('CMND' + str(i))
+        addres = request.form.get('address' + str(i))
+        loai_khach = request.form.get('loai_khach' + str(i))
+
+        if info_if:
+            info = BookInformation.query.get(info_if)
+            info.customer_name = cus_name
+            info.address = addres
+            info.CMND = cmnd
+            info.category_customer_id = loai_khach
+
+            db.session.add(info)
+            db.session.commit(info)
+        else:
+            if cus_name:
+                info = BookInformation(customer_name=cus_name,
+                                       CMND=cmnd,
+                                       address=addres,
+                                       room_book_id=room_book_id,
+                                       category_customer_id=loai_khach)
+
+                db.session.add(info)
+                db.session.commit(info)
+
+    list_info = BookInformation.query.filter(BookInformation.room_book_id == room_book_id).all()
+    msg = ''
+    if list_info:
+        room_book = RoomBook.query.get(room_book_id)
+        room_book.status = 'Đã nhận phòng'
+        db.session.add(room_book)
+        db.session.commit(room_book)
+
+        bill = Bill.query.filter(Bill.room_book_id == room_book.id)
+        if bill:
+            utils.update_bill(bill)
+        else:
+            utils.add_new_bill(room_book)
+        msg = 'Check in thành cồng'
+    else:
+        msg = 'check in thất bại'
+
+    date_int = room_book.date.strptime("%d-%m-%Y")
+    return redirect('/admin/lapphieuthuephong?msg=' + msg + 'date_in=' + date_int + 'room_book_id=' + str(room_book_id))
 
 @app.route("/userInformation")
 def UserInformationControll():

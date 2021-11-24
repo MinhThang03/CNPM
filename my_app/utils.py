@@ -169,18 +169,20 @@ def sum_price_basic(date_in, date_out, price):
 
 def tien_coc(sum_price, type_book):
     percent = TypeBook.query.filter(TypeBook.type == type_book).all()[0].percent_cost
-    return sum_price * (percent/100)
+    return sum_price * (percent / 100)
 
 
 def insert_book_room(room_dict, user_id):
     type = TypeBook.query.filter(TypeBook.type == room_dict.get('type_book')).all()[0]
     date_in = datetime.datetime.strptime(room_dict.get('date_in'), '%Y-%m-%d').date()
+    date_out = datetime.datetime.strptime(room_dict.get('date_out'), '%Y-%m-%d').date()
 
     room_book = RoomBook(date=date_in,
                          status='Chưa nhận phòng',
                          room_id=room_dict.get('id'),
                          user_id=user_id,
-                         book_id=type.id
+                         book_id=type.id,
+                         date_out=date_out
                          )
 
     db.session.add(room_book)
@@ -252,7 +254,7 @@ def get_all_feature_room():
 
 
 def get_list_room_arg(loai_phong, kieu_phong, loai_giuong, tam_nhin):
-    rooms = Room.query.join(CategoryRoom).filter(CategoryRoom.id == loai_phong).filter(Room.status=='trống').all()
+    rooms = Room.query.join(CategoryRoom).filter(CategoryRoom.id == loai_phong).filter(Room.status == 'trống').all()
     result = []
     for room in rooms:
         kieu_phong_room = Room.query.join(TypeRoom).join(LabelRoom).filter(LabelRoom.id == kieu_phong).filter(
@@ -264,14 +266,14 @@ def get_list_room_arg(loai_phong, kieu_phong, loai_giuong, tam_nhin):
 
         if len(kieu_phong_room) != 0 and len(loai_giuong_room) != 0 and len(view_room) != 0:
             result.append(view_room[0])
-            kieu_phong_room=[]
-            loai_giuong_room=[]
-            view_room=[]
+            kieu_phong_room = []
+            loai_giuong_room = []
+            view_room = []
 
     return result
 
-def covert_room_bean(rooms, date_in, date_out, type_book):
 
+def covert_room_bean(rooms, date_in, date_out, type_book):
     result = {}
     for room in rooms:
         price = calculate_price_room_basic(room)
@@ -295,7 +297,7 @@ def covert_room_bean(rooms, date_in, date_out, type_book):
         }
 
         for item in features:
-            room_dto[item.get('name')] =item.get('value')
+            room_dto[item.get('name')] = item.get('value')
 
         result[str(room.id)] = room_dto
 
@@ -307,7 +309,7 @@ def is_hop_le(loai_phong, kieu_phong, loai_giuong, tam_nhin, date_in, date_out):
         return False
 
     date_check_in = datetime.datetime.strptime(date_in, '%Y-%m-%d').date()
-    date_now  = datetime.datetime.now().date()
+    date_now = datetime.datetime.now().date()
     compare_time = (date_check_in - date_now).days
     if compare_time < 0 or compare_time > 100:
         return False
@@ -320,11 +322,11 @@ def is_hop_le(loai_phong, kieu_phong, loai_giuong, tam_nhin, date_in, date_out):
 
 
 def is_book_fast(loai_phong, date_in):
-    if (not loai_phong  or not date_in ):
+    if (not loai_phong or not date_in):
         return False
 
     date_check_in = datetime.datetime.strptime(date_in, '%Y-%m-%d').date()
-    date_now  = datetime.datetime.now().date()
+    date_now = datetime.datetime.now().date()
     compare_time = (date_check_in - date_now).days
     if compare_time < 0 or compare_time > 100:
         return False
@@ -367,3 +369,144 @@ def update_receipt_final(cart, phieu):
             print("RECEIPT ERROR: " + str(ex))
 
     return False
+
+
+def covert_room_been_staff(rooms):
+    result = []
+    for room in rooms:
+        price = calculate_price_room_basic(room)
+        features = get_features_room(room)
+        number_people, max_people = find_num_people_by_room(room)
+        room_dto = {
+            'id': room.id,
+            'name': room.name,
+            'image': room.image,
+            'status': room.status,
+            'category_id': room.category_id,
+            'price': price,
+            'number_people': number_people,
+            'max_people': max_people
+        }
+
+        for item in features:
+            room_dto[item.get('name')] = item.get('value')
+
+        result.append(room_dto)
+
+    return result
+
+
+def convert_room_book(room_books):
+    result = []
+    if room_books:
+        for item in room_books:
+            type_book = TypeBook.query.get(item.book_id)
+            room_book = {'id': item.id, 'status': item.status, 'room_id': item.room_id, 'user_id': item.user_id,
+                         'book_id': type_book, 'date_in': item.date.strftime("%d-%m-%Y"), 'date_out': ''
+                         }
+            if item.date_out:
+                room_book['date_out'] = item.date_out.strftime("%d-%m-%Y")
+            result.append(room_book)
+
+    return result
+
+
+def convert_book_info(book_infos):
+    result = []
+    if book_infos:
+        for item in book_infos:
+            book_info = {
+                'id': item.id,
+                'customer_name': item.customer_name,
+                'cmnd': item.CMND,
+                'address': item.address,
+                'room_book_id': item.room_book_id,
+                'category_customer_id': item.category_customer_id,
+            }
+            result.append(book_info)
+
+    return result
+
+
+def update_bill(bill):
+    room_book = RoomBook.query.get(bill.room_book_id)
+    room = Room.query.get(room_book.room_id)
+    category_room = CategoryRoom.query.get(room.category_id)
+    phi_them_khach = category_room.surcharge
+
+    numbers_people = category_room.number_people
+    info_books = BookInformation.query.filter(BookInformation.room_book_id == room_book.id).all()
+    current_number = len(info_books)
+    sum_phi_them_khach = 0
+    if current_number - numbers_people > 0:
+        sum_phi_them_khach = (phi_them_khach * (current_number - numbers_people)) / 100
+
+    sum_price = bill.costs + bill.costs * sum_phi_them_khach
+    category_customer = CategoryCustomer.query.filter(CategoryCustomer.type == 'nước ngoài').all()
+
+    count = 0
+    for item in info_books:
+        if item.category_customer_id == category_customer.id:
+            count += 1
+            break
+
+    if count == 1:
+        sum_price = sum_price * ((category_customer.percent) / 100)
+
+    date_check_in = room_book.date
+    date_check_out = room_book.out
+    compare_time = (date_check_out - date_check_in).days
+    bill.sum_price = sum_price
+    bill.phi_phu = sum_price - bill.costs
+    bill.room_number_date = compare_time
+    db.session.add(bill)
+    db.session.commit(bill)
+
+
+def tinh_gia_co_ban(room):
+    type_rooms = TypeRoom.query.filter(TypeRoom.room_id == room.id).all()
+    category_room = CategoryRoom.query.get(room.category_id)
+    price = category_room.price
+    percent = 0
+    for item in type_rooms:
+        label = LabelRoom.query.get(item.label_id)
+        percent += percent.percent
+
+    price = price + price * (percent / 100)
+    return price
+
+
+def add_new_bill(room_book):
+    room = Room.query.get(room_book.room_id)
+    category_room = CategoryRoom.query.get(room.category_id)
+    phi_them_khach = category_room.surcharge
+
+    numbers_people = category_room.number_people
+    info_books = BookInformation.query.filter(BookInformation.room_book_id == room_book.id).all()
+    current_number = len(info_books)
+    sum_phi_them_khach = 0
+    if current_number - numbers_people > 0:
+        sum_phi_them_khach = (phi_them_khach * (current_number - numbers_people)) / 100
+
+    price = tinh_gia_co_ban(room)
+    sum_price = price + price * sum_phi_them_khach
+    category_customer = CategoryCustomer.query.filter(CategoryCustomer.type == 'nước ngoài').all()
+
+    count = 0
+    for item in info_books:
+        if item.category_customer_id == category_customer.id:
+            count += 1
+            break
+
+    if count == 1:
+        sum_price = sum_price * ((category_customer.percent) / 100)
+
+    date_check_in = room_book.date
+    date_check_out = room_book.out
+    compare_time = (date_check_out - date_check_in).days
+
+    phi_phu = sum_price - price
+    bill = Bill(sum_price=sum_price, costs=price, phi_phu=phi_phu, status='đã cọc', room_number_date=compare_time,
+                customer_id=room_book.user_id, room_book_id=room_book.id)
+    db.session.add(bill)
+    db.session.commit(bill)

@@ -1,0 +1,41 @@
+{% extends 'admin/master.html' %}
+
+{% block body %}
+    <div class="container1">
+        <table class="table table-striped table-bordered model-list  table-hover">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Tên phòng</th>
+                <th scope="col">Số người / phòng</th>
+                <th scope="col">Số người tối đa / phòng</th>
+                <th scope="col">Kiểu phòng</th>
+                <th scope="col">Loại giường</th>
+                <th scope="col">Tầm nhìn</th>
+                <th scope="col">Giá cơ bản / 1 ngày $</th>
+                <th scope="col">Tình trạng</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for room in roomsdto %}
+                <tr>
+                    <td>{{ room.get('id') }}</td>
+                    <td>{{ room.get('name') }}</td>
+                    <td>{{ room.get('number_people') }}</td>
+                    <td>{{ room.get('max_people') }}</td>
+                    <td>{{ room.get('Kiểu phòng') }}</td>
+                    <td>{{ room.get('Loại giường') }}</td>
+                    <td>{{ room.get('Tầm nhìn') }}</td>
+                    <td>{{ room.get('price') }}</td>
+                    <td>{{ room.get('status') }}</td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+
+    </div>
+
+
+
+{% endblock %}
