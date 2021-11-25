@@ -84,6 +84,30 @@
             text-decoration: none
         }
 
+        .AnhPhong{
+            width: 338px;
+            height: 338px;
+
+            display: block;
+            border-radius: 12px;
+            border: 2px solid #FB5621;
+            /* padding: 10px; */
+            background-color: #FB5621;
+        }
+
+        .login100-form{
+            position: relative;
+        }
+
+        .paddingImg{
+            padding: 20px;
+            background-color: white;
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 5;
+        }
+
 
     </style>
 
@@ -91,6 +115,7 @@
     <div class="  p-r-50 p-t-72 p-b-50 container informationContainer">
         <div>
             <form class="login100-form validate-form" action="/book_room/finish" method="post">
+
 
 
                 <div class="onOneRow">
@@ -101,13 +126,13 @@
                 </div>
 
 
+                <div class="paddingImg"><img class="AnhPhong" src="../../static/images/hotel_feture_2.jpg" alt=""></div>
+
                 <div class="a-col wrap-input100 validate-input ">
                     <span class="label-input100 ">{{ room.get('name') }}</span>
                 </div>
 
-                <div class="a-col wrap-input100 validate-input ">
-                    <span class="label-input100 ">Ảnh phòng</span>
-                </div>
+
 
                 {% for feature in features %}
                     <div class="a-col wrap-input100 validate-input ">

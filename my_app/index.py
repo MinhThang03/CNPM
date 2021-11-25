@@ -531,7 +531,7 @@ def update_confirm_bill(bill_id):
 
     return jsonify({
         "error_code": 404
-})
+    })
 
 
 @app.route("/userInformation")
@@ -547,16 +547,6 @@ def test():
 @app.route("/register/active")
 def UserActiveControll():
     return render_template("layout/activeUser.html")
-
-
-@app.route("/RegisterRoomFast")
-def RegisterRoomFastControll():
-    return render_template("layout/RegisterRoomFast.html")
-
-
-@app.route("/RegisterRoomDetails")
-def RegisterRoomDetailsControll():
-    return render_template("layout/RegisterRoomDetails.html")
 
 
 @app.route("/listMyRoom")

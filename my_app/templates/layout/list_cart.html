@@ -51,17 +51,24 @@
             margin-right: -15px;
             margin-left: -15px
         }
+        .tablePay{
+            margin: 10px;
+        }
     </style>
-    <div id="fh5co-blog-section">
+    <div id="fh5co-blog-section" style="padding: 28px;">
         <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="section-title text-center">
-                        <h2>Danh sách đặt phòng chờ thanh toán</h2>
-                    </div>
-                </div>
+
+
+            <div class="onOneRow p-b-50">
+                    <span class="login100-form-title ">
+                        Danh sách đặt phòng chờ thanh toán
+                    </span>
+
+
+
             </div>
-            <div class="row">
+
+            <div class="row tablePay">
                 <table class="table table-bordered">
                     <tr>
                         <th>Mã phòng</th>
@@ -108,7 +115,7 @@
             </div>
 
 
-            <div id="paypal-button-container"></div>
+            <div id="paypal-button-container" style="display: flex; justify-content: center;"></div>
 
             <!-- Include the PayPal JavaScript SDK -->
             <script src="https://www.paypal.com/sdk/js?client-id=test&currency=USD"></script>

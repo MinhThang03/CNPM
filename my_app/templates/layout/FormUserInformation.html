@@ -1,5 +1,5 @@
 <style>
-    .informationContainer{
+    .informationContainer {
         padding: 0px !important;
         display: flex;
         justify-content: center;
@@ -9,48 +9,99 @@
         /* width: auto; */
         /* height: 30px !important; */
     }
+
+    .login100-form {
+        position: relative;
+    }
+
+    .paddingImg {
+        padding: 20px;
+        background-color: white;
+        position: absolute;
+        top: 66px;
+        right: 0;
+        z-index: 5;
+    }
+
+    .AnhPhong {
+        width: 300px;
+        height: 300px;
+
+        display: block;
+        border-radius: 50%;
+        border: 2px solid #FB5621;
+        /* padding: 10px; */
+        background-color: #FB5621;
+    }
 </style>
 
 
 <div class="  p-r-50 p-t-72 p-b-50 container informationContainer">
-  <div>
-    <form class="login100-form validate-form">
-        <span class="login100-form-title p-b-59">
-            Thông tinh tài khoản
-        </span>
+    <div>
+        <form class="login100-form validate-form">
+            <span class="login100-form-title p-b-59">
+                Thông tinh tài khoản
+            </span>
 
-        <div class="wrap-input100 validate-input" data-validate="Name is required">
-            <span class="label-input100">Full Name</span>
-            <input class="input100" type="text" name="name" placeholder="Name...">
-            <span class="focus-input100"></span>
-        </div>
-
-        <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
-            <span class="label-input100">Email</span>
-            <input class="input100" type="text" name="email" placeholder="Email addess...">
-            <span class="focus-input100"></span>
-        </div>
-
-        <div class="wrap-input100 validate-input" data-validate="Username is required">
-            <span class="label-input100">Username</span>
-            <input class="input100" type="text" name="username" placeholder="Username...">
-            <span class="focus-input100"></span>
-        </div>
+            <div class="paddingImg"><img class="AnhPhong" src="../../static/images/hotel_feture_2.jpg" alt="">
 
 
-
-
-
-        <div class="container-login100-form-btn">
-            <div class="wrap-login100-form-btn">
-                <div class="login100-form-bgbtn"></div>
-                <button class="login100-form-btn">
-                    Edit
-                </button>
             </div>
 
 
-        </div>
-    </form>
-  </div>
+
+            <div class="wrap-input100 validate-input" data-validate="Name is required">
+                <span class="label-input100">User name</span>
+                <p class="input100">Duong</p>
+                <span class="focus-input100"></span>
+            </div>
+
+            <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+                <span class="label-input100">Full name</span>
+                <input class="input100" type="text" name="email" placeholder="Full name...">
+                <span class="focus-input100"></span>
+            </div>
+
+            <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+                <span class="label-input100">Email</span>
+                <input class="input100" type="text" name="email" placeholder="Email...">
+                <span class="focus-input100"></span>
+            </div>
+
+            <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+                <span class="label-input100">Addess</span>
+                <input class="input100" type="text" name="email" placeholder="Addess...">
+                <span class="focus-input100"></span>
+            </div>
+
+            <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+                <span class="label-input100">Phone</span>
+                <input class="input100" type="text" name="email" placeholder="Phone...">
+                <span class="focus-input100"></span>
+            </div>
+
+
+            <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+                <span class="label-input100">Birthday</span>
+                <input class="input100" type="date" name="email" placeholder="BrithDay...">
+                <span class="focus-input100"></span>
+            </div>
+
+
+
+
+
+
+            <div class="container-login100-form-btn">
+                <div class="wrap-login100-form-btn">
+                    <div class="login100-form-bgbtn"></div>
+                    <button class="login100-form-btn">
+                        Edit
+                    </button>
+                </div>
+
+
+            </div>
+        </form>
+    </div>
 </div>

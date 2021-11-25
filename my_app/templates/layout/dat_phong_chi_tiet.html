@@ -83,6 +83,21 @@
             color: white;
             text-decoration: none
         }
+        .buttonTop{
+            background-color: #FF5722;
+            /* display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 20px;
+            min-width: 244px;
+            height: 50px;
+            font-family: Poppins-Medium;
+            font-size: 16px;
+            color: #fff;
+            line-height: 1.2;
+            border-radius: 20%; */
+        }
+
 
 
     </style>
@@ -95,11 +110,16 @@
                     <span class="login100-form-title p-b-59">
                         Đặt phòng chi tiết
                     </span>
-                <div class="wrap-login100-form-btn" tyle="text-align: center">
-                    <button class="login100-form-btn">
-                        <a class="/book_room?type=fast" href="/RegisterRoomDetails"> Đặt phòng nhanh</a>
-                    </button>
+
+                <div class="container-login100-form-btn" style="justify-content: right !important;">
+                    <div class="wrap-login100-form-btn">
+
+                        <button class="login100-form-btn" type="submit">
+                            <a class=" buttonTop " href="/RegisterRoomDetails" style="color :white"> Đặt phòng nhanh</a>
+                        </button>
+                    </div>
                 </div>
+
             </div>
             <form class="login100-form validate-form" action="/book_room/detail" method="post" novalidate>
 

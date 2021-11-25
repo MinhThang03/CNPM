@@ -68,6 +68,7 @@
             display: flex;
             width: 100%;
             margin: 20px auto;
+            justify-content: center;
         }
 
         .ColorTextGray {
@@ -79,10 +80,22 @@
             font-size: 8rem;
         }
 
-        .colorWhite {
-            color: white;
-            text-decoration: none
+        .buttonTop{
+            background-color: #FF5722;
+            /* display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 20px;
+            min-width: 244px;
+            height: 50px;
+            font-family: Poppins-Medium;
+            font-size: 16px;
+            color: #fff;
+            line-height: 1.2;
+            border-radius: 20%; */
         }
+
+
 
 
     </style>
@@ -90,23 +103,25 @@
 
     <div class="  p-r-50 p-t-72 p-b-50 container informationContainer">
         <div>
-            <div class="onOneRow">
-                    <span class="login100-form-title p-b-59">
+            <div class="onOneRow p-b-50">
+                    <span class="login100-form-title ">
                         Đặt phòng nhanh
                     </span>
-                <div class="wrap-login100-form-btn" tyle="text-align: center">
-                    <button class="login100-form-btn">
-                        <a class="colorWhite" href="/book_room?type=detail"> Đặt phòng theo yêu cầu</a>
-                    </button>
-                </div>
+
+                    <div class="container-login100-form-btn" style="justify-content: right !important;">
+                        <div class="wrap-login100-form-btn">
+
+                            <button class="login100-form-btn" type="submit">
+                                <a class=" buttonTop " href="/book_room?type=detail" style="color :white"> Đặt phòng theo yêu cầu</a>
+                            </button>
+                        </div>
+                    </div>
+
             </div>
             <form class="login100-form validate-form" action="/book_room/fast" method="post">
 
 
-                <div>
-                    <span><small
-                            style="font-size: 16px">Không cần thanh toán trước - thời gian ở tối đa chỉ 1 ngày</small></span>
-                </div>
+
 
 
                 <div class="a-col wrap-input100 validate-input ">
@@ -123,7 +138,8 @@
 
 
                 <div class="wrap-input100 validate-input" data-validate="Name is required">
-                    <span class="label-input100">Check in</span>
+                    <span class="label-input100">Check in  <span><small
+                        style="font-size: 16px; color: #ff562277;"> (Không cần thanh toán trước - thời gian ở tối đa chỉ 1 ngày)</small></span></span>
                     <input type="date" name="date_check_in" class="input100"/>
                     <span class="focus-input100"></span>
                 </div>
