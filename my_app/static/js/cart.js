@@ -92,3 +92,7 @@ function pay() {
             alert("THANH TOAN DANG CO LOI!!! VUI LONG THUC HIEN SAU!")
     })
 }
+
+
+
+

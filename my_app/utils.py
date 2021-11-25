@@ -219,7 +219,10 @@ def update_status_room(room, status):
 
 
 def add_bill_dat_phong(room_book, user_id, room_dict, status):
-    sum_price = room_dict.get('sum_price_basic')
+    sum_price = room_dict.get('price')
+    compare_time = (room_book.date_out - room_book.date).days
+    if (compare_time <= 0):
+        compare_time = 1
 
     deposit = room_dict.get('phi_coc')
 
@@ -227,7 +230,8 @@ def add_bill_dat_phong(room_book, user_id, room_dict, status):
                 customer_id=user_id,
                 room_book_id=room_book.id,
                 status=status,
-                costs=sum_price
+                costs=sum_price,
+                room_number_date=compare_time
                 )
 
     db.session.add(bill)
@@ -441,8 +445,14 @@ def update_bill(bill):
     if current_number - numbers_people > 0:
         sum_phi_them_khach = (phi_them_khach * (current_number - numbers_people)) / 100
 
-    sum_price = bill.costs + bill.costs * sum_phi_them_khach
-    category_customer = CategoryCustomer.query.filter(CategoryCustomer.type == 'nước ngoài').all()
+    date_check_in = room_book.date
+    date_check_out = room_book.date_out
+    compare_time = (date_check_out - date_check_in).days
+    if compare_time == 0:
+        compare_time = 1
+
+    sum_price = bill.costs * compare_time + bill.costs * compare_time * sum_phi_them_khach
+    category_customer = CategoryCustomer.query.filter(CategoryCustomer.type == 'nước ngoài').all()[0]
 
     count = 0
     for item in info_books:
@@ -453,14 +463,11 @@ def update_bill(bill):
     if count == 1:
         sum_price = sum_price * ((category_customer.percent) / 100)
 
-    date_check_in = room_book.date
-    date_check_out = room_book.out
-    compare_time = (date_check_out - date_check_in).days
     bill.sum_price = sum_price
-    bill.phi_phu = sum_price - bill.costs
+    bill.phi_phu = sum_price - bill.costs * compare_time
     bill.room_number_date = compare_time
     db.session.add(bill)
-    db.session.commit(bill)
+    db.session.commit()
 
 
 def tinh_gia_co_ban(room):
@@ -488,9 +495,15 @@ def add_new_bill(room_book):
     if current_number - numbers_people > 0:
         sum_phi_them_khach = (phi_them_khach * (current_number - numbers_people)) / 100
 
+    date_check_in = room_book.date
+    date_check_out = room_book.date_out
+    compare_time = (date_check_out - date_check_in).days
+    if compare_time == 0:
+        compare_time = 1
+
     price = tinh_gia_co_ban(room)
-    sum_price = price + price * sum_phi_them_khach
-    category_customer = CategoryCustomer.query.filter(CategoryCustomer.type == 'nước ngoài').all()
+    sum_price = price * compare_time + price * sum_phi_them_khach * compare_time
+    category_customer = CategoryCustomer.query.filter(CategoryCustomer.type == 'nước ngoài').all()[0]
 
     count = 0
     for item in info_books:
@@ -501,12 +514,46 @@ def add_new_bill(room_book):
     if count == 1:
         sum_price = sum_price * ((category_customer.percent) / 100)
 
-    date_check_in = room_book.date
-    date_check_out = room_book.out
-    compare_time = (date_check_out - date_check_in).days
-
-    phi_phu = sum_price - price
+    phi_phu = sum_price - price * compare_time
     bill = Bill(sum_price=sum_price, costs=price, phi_phu=phi_phu, status='đã cọc', room_number_date=compare_time,
                 customer_id=room_book.user_id, room_book_id=room_book.id)
     db.session.add(bill)
-    db.session.commit(bill)
+    db.session.commit()
+
+
+def confirm_bill(bill):
+    bill.employee_id = current_user.id
+    bill.datetime = datetime.datetime.now()
+    bill.status = 'Đã thanh toán'
+    db.session.add(bill)
+    db.session.commit()
+
+
+def update_status_room_book(room_book, status):
+    room_book.status = status
+    db.session.add(room_book)
+    db.session.commit()
+
+def thanh_toan_hoa_don(bill):
+    room_book = RoomBook.query.get(bill.room_book_id)
+    room = Room.query.get(room_book.room_id)
+
+    room_book.status = 'Đã trả phòng'
+    db.session.add(room_book)
+
+    room.status = 'trống'
+    db.session.add(room)
+
+    bill.employee_id = current_user.id
+    bill.datetime = datetime.datetime.now()
+    bill.status = 'Đã thanh toán'
+    db.session.add(bill)
+
+    # update_status_room(room, 'trống')
+    # confirm_bill(bill)
+    # update_status_room_book(room_book,'Đã trả phòng')
+    try:
+        db.session.commit()
+        return True
+    except:
+        return False

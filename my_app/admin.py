@@ -186,18 +186,20 @@ class LapPhieuThuePhong(AuthenticatedViewWithBaseView):
     def index(self):
         date_in = request.args.get('date_in')
         room_book_id = request.args.get('room_book_id')
-        room_book_infos = BookInformation.query.filter(BookInformation.room_book_id == room_book_id).all()
-        room_id = RoomBook.query.get(room_book_id).room_id
-        room = Room.query.get(room_id)
+        if room_book_id:
+            msg = request.args.get('msg')
+            room_book_infos = BookInformation.query.filter(BookInformation.room_book_id == room_book_id).all()
+            room_id = RoomBook.query.get(room_book_id).room_id
+            room = Room.query.get(room_id)
 
-        numbers_people, max_people = utils.find_num_people_by_room(room)
-        count_people = max_people - numbers_people
-        loai_khach = CategoryCustomer.query.all()
+            numbers_people, max_people = utils.find_num_people_by_room(room)
+            count_people = max_people - numbers_people
+            loai_khach = CategoryCustomer.query.all()
 
-        return self.render('admin/lap_phieu_thue_phong.html', num_people=numbers_people,
+            return self.render('admin/lap_phieu_thue_phong.html', num_people=numbers_people,
                            count_people=count_people, loai_khach=loai_khach, date_in=date_in,
-                           room_book_infos=room_book_infos, room_id=room_id, room_book_id=room_book_id)
-
+                           room_book_infos=room_book_infos, room_id=room_id, room_book_id=room_book_id, msg=msg)
+        return self.render('admin/lap_phieu_thue_phong.html', num_people=0, count_people=0)
 
 class LapHoaDon(AuthenticatedViewWithBaseView):
     @expose('/')
@@ -221,10 +223,18 @@ class danh_sach_phong_dang_dat(AuthenticatedViewWithBaseView):
         return self.render('admin/ds_phong_dang_dat.html', rooms=roomdtos)
 
 
+class danh_sach_hoa_don_chua_thanh_toan(AuthenticatedViewWithBaseView):
+    @expose('/')
+    def index(self):
+        bills = Bill.query.filter(Bill.status != 'Đã thanh toán').all()
+        return self.render('admin/ds_hoa_don_chua_thanh_toan.html', bills=bills)
+
+
 admin.add_view(danh_sach_phong(name='Danh sách phòng', category='Quản lí phòng'))
 admin.add_view(danh_sach_phong_dang_dat(name='Phiếu phòng đang đặt', category='Quản lí đặt phòng'))
-admin.add_view(LapPhieuThuePhong(name='Lập phiếu thuê phòng'))
+admin.add_view(LapPhieuThuePhong(name='Lập phiếu thuê phòng', category='Quản lí đặt phòng'))
 admin.add_view(LapHoaDon(name='Lập Hoá Đơn'))
 admin.add_view(BaoCaoMatDoSuDungPhong(name='Báo cáo mật độ sử dụng phòng', category='Thống kê'))
 admin.add_view(LogoutView(name="Đăng xuất"))
 admin.add_view(ThongKeDoanhThu(name='Thống kê doanh thu', category='Thống kê'))
+admin.add_view(danh_sach_hoa_don_chua_thanh_toan(name='Danh sách hóa đơn chưa thanh toán', category='Thanh toán'))

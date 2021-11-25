@@ -462,7 +462,8 @@ def admin_confirm_check_in():
     if not current_user.is_authenticated:
         return render_template("layout/loginUser.html")
 
-    room_book_id = request.args.get('room_book_id')
+    room_book_id = request.form.get('room_book_id')
+
     room = Room.query.get(RoomBook.query.get(room_book_id).room_id)
     numbers_people, max_people = utils.find_num_people_by_room(room)
     for i in range(max_people):
@@ -480,7 +481,7 @@ def admin_confirm_check_in():
             info.category_customer_id = loai_khach
 
             db.session.add(info)
-            db.session.commit(info)
+            db.session.commit()
         else:
             if cus_name:
                 info = BookInformation(customer_name=cus_name,
@@ -490,7 +491,7 @@ def admin_confirm_check_in():
                                        category_customer_id=loai_khach)
 
                 db.session.add(info)
-                db.session.commit(info)
+                db.session.commit()
 
     list_info = BookInformation.query.filter(BookInformation.room_book_id == room_book_id).all()
     msg = ''
@@ -498,19 +499,40 @@ def admin_confirm_check_in():
         room_book = RoomBook.query.get(room_book_id)
         room_book.status = 'Đã nhận phòng'
         db.session.add(room_book)
-        db.session.commit(room_book)
+        db.session.commit()
 
-        bill = Bill.query.filter(Bill.room_book_id == room_book.id)
+        bill = Bill.query.filter(Bill.room_book_id == room_book.id).all()
         if bill:
-            utils.update_bill(bill)
+            utils.update_bill(bill[0])
         else:
             utils.add_new_bill(room_book)
         msg = 'Check in thành cồng'
     else:
         msg = 'check in thất bại'
 
-    date_int = room_book.date.strptime("%d-%m-%Y")
-    return redirect('/admin/lapphieuthuephong?msg=' + msg + 'date_in=' + date_int + 'room_book_id=' + str(room_book_id))
+    date_int = room_book.date.strftime("%d-%m-%Y")
+    return redirect(
+        '/admin/lapphieuthuephong?msg=' + msg + '&date_in=' + date_int + '&room_book_id=' + str(room_book_id))
+
+
+@app.route("/api/update-confirm-bill/<bill_id>", methods=['put'])
+def update_confirm_bill(bill_id):
+    bill = Bill.query.get(bill_id)
+
+    if bill:
+        bill = utils.thanh_toan_hoa_don(bill)
+        if bill:
+            return jsonify({
+                "error_code": 200,
+            })
+        else:
+            return jsonify({
+                "error_code": 404})
+
+    return jsonify({
+        "error_code": 404
+})
+
 
 @app.route("/userInformation")
 def UserInformationControll():
