@@ -51,6 +51,20 @@
             margin-right: -15px;
             margin-left: -15px
         }
+
+
+        h3.textInformation {
+            font-size: 1.4rem !important;
+            line-height: 2.6rem;
+        }
+
+        .boderItem {
+            box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px !important;
+        }
+
+        div h3 i {
+            padding-right: 12px;
+        }
     </style>
     <div id="fh5co-blog-section">
         <div class="container">
@@ -62,24 +76,46 @@
                 </div>
             </div>
             <div class="row">
-                {% for item in rooms.values() %}
-                    <div class="col-md-4">
-                        <div class="blog-grid" style="background-image: url(../../static/images/image-1.jpg);">
-                        </div>
+                {% if not err_msg %}
+                    {% for item in rooms.values() %}
+                        <div class="col-md-4">
+                            <div class="blog-grid" style="background-image: url(../../static/images/image-1.jpg);">
+                            </div>
 
-                        <div class="desc">
-                            <h3>{{ item.name }}</h3>
-                            <h3>Số người: {{ item.number_people }}</h3>
-                            <h3>Kiểu phòng: {{ item.get('Kiểu phòng') }}</h3>
-                            <h3>Loại giường: {{ item.get('Loại giường') }}</h3>
-                            <h3>Tầm nhìn: {{ item.get('Tầm nhìn') }}</h3>
-                            <h3>Giá/1 ngày: {{ item.get('price') }}</h3>
+
+                            <div class="desc boderItem">
+                                <h3 class="textInformation"><i class="ti-home"></i> {{ item.name }}</h3>
+                                <h3 class="textInformation"><i class="ti-user"></i> Số người: {{ item.number_people }}
+                                </h3>
+                                <h3 class="textInformation"><i class="ti-crown"></i> Kiểu
+                                    phòng: {{ item.get('Kiểu phòng') }}</h3>
+                                <h3 class="textInformation"><i class="ti-star"></i> Loại
+                                    giường: {{ item.get('Loại giường') }}</h3>
+                                <h3 class="textInformation"><i class="ti-camera"></i> Tầm
+                                    nhìn: {{ item.get('Tầm nhìn') }}</h3>
+                                <h3 class="textInformation"><i class="ti-money"></i> Giá/1 ngày: {{ item.get('price') }}
+                                </h3>
+                                <div class="container-login100-form-btn"
+                                     style="margin-top: 40px; display: flex; justify-content: center;">
+                                    <div class="wrap-login100-form-btn">
+
+
+                                        <h3><a href="/book_room/lap_phieu?room_id={{ item.id }}"
+                                               class="login100-form-btn"
+                                               style="background-color: #FF5722; color: white;">Thuê
+                                            phòng</a></h3>
+
+                                    </div>
+
+                                </div>
+
+
+                            </div>
                         </div>
-                        <div class="desc">
-                            <h3><a href="/book_room/lap_phieu?room_id={{ item.id }}">Thuê phòng</a></h3>
-                        </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                {% else %}
+                    <div>{{ err_msg}}</div>
+                {% endif %}
             </div>
         </div>
     </div>

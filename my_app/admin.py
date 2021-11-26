@@ -139,6 +139,9 @@ class LogoutView(BaseView):
         return current_user.is_authenticated
 
 
+
+
+
 # ------------- Add view Admin
 admin.add_view(UserView(User, db.session, name='Người dùng', category='Quản lý người dùng'))
 admin.add_view(RoleView(Role, db.session, name='Quyền', category='Quản lý người dùng'))
@@ -175,11 +178,23 @@ class ThongKeDoanhThu(AuthenticatedViewWithBaseView):
         return self.render('admin/ThongKeDoanhThu.html')
 
 
-class BaoCaoMatDoSuDungPhong(AuthenticatedViewWithBaseView):
+
+class stats_mat_do_su_dung(AuthenticatedViewWithBaseView):
     @expose('/')
     def index(self):
-        return self.render('admin/BCMatDoDungPhong.html')
+        from_date = request.args.get('from_date')
+        to_date = request.args.get('to_date')
+        stats = utils.stats_mat_do_su_dung(from_date=from_date, to_date=to_date)
+        return self.render('admin/stats_mat_do_su_dung.html', stats=stats)
 
+
+class stats_doanh_thu(AuthenticatedViewWithBaseView):
+    @expose('/')
+    def index(self):
+        from_date = request.args.get('from_date')
+        to_date = request.args.get('to_date')
+        stats = utils.stats_doanh_thu(from_date=from_date, to_date=to_date)
+        return self.render('admin/stats_doanh_thu.html', stats=stats)
 
 class LapPhieuThuePhong(AuthenticatedViewWithBaseView):
     @expose('/', methods=['GET'])
@@ -226,7 +241,7 @@ class danh_sach_phong_dang_dat(AuthenticatedViewWithBaseView):
 class danh_sach_hoa_don_chua_thanh_toan(AuthenticatedViewWithBaseView):
     @expose('/')
     def index(self):
-        bills = Bill.query.filter(Bill.status != 'Đã thanh toán').all()
+        bills = Bill.query.join(RoomBook).filter(Bill.status != 'Đã thanh toán').filter(RoomBook.status == 'Đã nhận phòng').all()
         return self.render('admin/ds_hoa_don_chua_thanh_toan.html', bills=bills)
 
 
@@ -234,7 +249,7 @@ admin.add_view(danh_sach_phong(name='Danh sách phòng', category='Quản lí ph
 admin.add_view(danh_sach_phong_dang_dat(name='Phiếu phòng đang đặt', category='Quản lí đặt phòng'))
 admin.add_view(LapPhieuThuePhong(name='Lập phiếu thuê phòng', category='Quản lí đặt phòng'))
 admin.add_view(LapHoaDon(name='Lập Hoá Đơn'))
-admin.add_view(BaoCaoMatDoSuDungPhong(name='Báo cáo mật độ sử dụng phòng', category='Thống kê'))
+admin.add_view(stats_mat_do_su_dung(name='Báo cáo mật độ sử dụng phòng', category='Thống kê'))
 admin.add_view(LogoutView(name="Đăng xuất"))
-admin.add_view(ThongKeDoanhThu(name='Thống kê doanh thu', category='Thống kê'))
+admin.add_view(stats_doanh_thu(name='Thống kê doanh thu', category='Thống kê'))
 admin.add_view(danh_sach_hoa_don_chua_thanh_toan(name='Danh sách hóa đơn chưa thanh toán', category='Thanh toán'))

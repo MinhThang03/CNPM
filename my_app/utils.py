@@ -2,7 +2,7 @@ import string
 from threading import Thread
 from flask import render_template
 from flask_login import current_user
-from sqlalchemy import null
+from sqlalchemy import null, func
 from my_app import app, db
 import hashlib
 from my_app.models import *
@@ -534,6 +534,7 @@ def update_status_room_book(room_book, status):
     db.session.add(room_book)
     db.session.commit()
 
+
 def thanh_toan_hoa_don(bill):
     room_book = RoomBook.query.get(bill.room_book_id)
     room = Room.query.get(room_book.room_id)
@@ -557,3 +558,90 @@ def thanh_toan_hoa_don(bill):
         return True
     except:
         return False
+
+
+def stats_doanh_thu(from_date=None, to_date=None):
+    bills = Bill.query.join(RoomBook,
+                                RoomBook.id == Bill.room_book_id ).join(
+        Room, Room.id == RoomBook.room_id ).join(
+        CategoryRoom, CategoryRoom.id == Room.category_id).add_columns(CategoryRoom.id.label('category_id')).filter(Bill.status=='Đã thanh toán')
+
+    if from_date:
+        bills = bills.filter(Bill.datetime.__ge__(from_date))
+
+    if to_date:
+        bills = bills.filter(Bill.datetime.__le__(to_date))
+
+    bills = bills.all()
+
+    list_category_phong = CategoryRoom.query.all()
+
+    result = []
+
+    sum = 0.0
+    for bill in bills:
+        sum += bill.Bill.sum_price
+
+
+    for cate in list_category_phong:
+        item = {
+            'id': cate.id,
+            'number_people': cate.number_people
+        }
+
+        price = 0
+        for i in bills:
+            if i.category_id == cate.id:
+                price += i.Bill.sum_price
+
+        item['price'] = price
+        if sum > 0:
+            item['ty_le'] = round((price/sum) * 100, 2)
+        else:
+            item['ty_le'] = 0
+        result.append(item)
+    return result
+
+
+
+def tinh_hieu_hai_ngay(date_check_in, date_check_out):
+    return (date_check_out - date_check_in).days
+
+def stats_mat_do_su_dung(from_date=None, to_date=None):
+    result = []
+    room_books = RoomBook.query
+
+    if from_date:
+        room_books = room_books.filter(RoomBook.date.__ge__(from_date))
+
+    if to_date:
+        room_books = room_books.filter(RoomBook.date.__le__(to_date))
+
+    room_books = room_books.all()
+
+    sum_days = 0
+    for book in room_books:
+        sum_days += tinh_hieu_hai_ngay(book.date, book.date_out)
+
+    rooms = Room.query.all()
+    stt = 0
+    for room in rooms:
+        stt += 1
+        item = {
+            'STT': stt,
+            'name': room.name
+        }
+
+        day = 0
+        for temp in room_books:
+            a = temp.room_id
+            b = room.id
+            if temp.room_id == room.id:
+                day += tinh_hieu_hai_ngay(temp.date, temp.date_out)
+        item['day'] = day
+        if sum_days != 0:
+            item['ty_le'] = round((day/sum_days) * 100, 2)
+        else:
+            item['ty_le'] = 0
+        result.append(item)
+    return  result

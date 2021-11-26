@@ -357,8 +357,9 @@ def book_room_detail():
         if len(rooms) != 0:
             room_dto_dict = utils.covert_room_bean(rooms, date_in, date_out, 'online_detail')
             session['list_current_room'] = room_dto_dict
-
-        return render_template('layout/list_room.html', rooms=room_dto_dict)
+            return render_template('layout/list_room.html', rooms=room_dto_dict)
+        else:
+            return render_template('layout/list_room.html', err_msg='Hiện đang hết phòng, xin quý khách vui lòng quay lại sau')
     return redirect('/book_room?type=detail')
 
 
@@ -510,7 +511,7 @@ def admin_confirm_check_in():
     else:
         msg = 'check in thất bại'
 
-    date_int = room_book.date.strftime("%d-%m-%Y")
+    date_int = RoomBook.query.get(room_book_id).date.strftime("%d-%m-%Y")
     return redirect(
         '/admin/lapphieuthuephong?msg=' + msg + '&date_in=' + date_int + '&room_book_id=' + str(room_book_id))
 

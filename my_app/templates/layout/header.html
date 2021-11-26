@@ -47,6 +47,12 @@
                                         <a href="/userInformation">Tài khoản của tôi</a>
                                     </li>
 
+                                    {% if current_user.role_id != 3 %}
+                                        <li class="">
+                                            <a href="/admin">Đến trang quản lí</a>
+                                        </li>
+                                    {% endif %}
+
                                     <li class="">
                                         <a href="/listMyRoom">Lịch sử đặt phòng</a>
                                     </li>
