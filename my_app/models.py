@@ -27,7 +27,7 @@ class User(db.Model, UserMixin):
     email = Column(String(50), nullable=False, unique=True)
     address = Column(String(100))
     phone = Column(String(11))
-    image = Column(String(120))
+    image = Column(String(300))
     birthdate = Column(DateTime)
     # code_active = Column(String(20))
     role_id = Column(Integer, ForeignKey(Role.id), nullable=False)

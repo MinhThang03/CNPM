@@ -32,19 +32,25 @@
 
                         {% if current_user.is_authenticated %}
                             <li class="UserInfor">
-                                <a class="padding6" href="/userInformation">
-                                    <img src="https://www.pavilionweb.com/wp-content/uploads/2017/03/man-300x300.png"
-                                         alt=""
-                                         class="header__navbar-user-img">
+                                <a class="padding6">
+                                    {% if not current_user.image %}
+                                        <img src="https://www.pavilionweb.com/wp-content/uploads/2017/03/man-300x300.png"
+                                             alt=""
+                                             class="header__navbar-user-img">
+                                    {% else %}
+                                        <img src="{{ current_user.image }}"
+                                             alt=""
+                                             class="header__navbar-user-img">
+                                    {% endif %}
                                     <span class="header__navbar-user-name">{{ current_user.name }}</span>
                                 </a>
                                 <ul class="fh5co-sub-menu">
                                     <li class="">
-                                        <a href="/userInformation">Xin chào!</a>
+                                        <a >Xin chào!</a>
                                     </li>
 
                                     <li class="">
-                                        <a href="/userInformation">Tài khoản của tôi</a>
+                                        <a href="/view/user-info">Tài khoản của tôi</a>
                                     </li>
 
                                     {% if current_user.role_id != 3 %}
@@ -53,9 +59,9 @@
                                         </li>
                                     {% endif %}
 
-                                    <li class="">
-                                        <a href="/listMyRoom">Lịch sử đặt phòng</a>
-                                    </li>
+{#                                    <li class="">#}
+{#                                        <a href="/listMyRoom">Lịch sử đặt phòng</a>#}
+{#                                    </li>#}
 
                                     <li class="">
                                         <a href="/user-logout">Đăng xuất</a>

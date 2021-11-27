@@ -80,7 +80,7 @@
             font-size: 8rem;
         }
 
-        .buttonTop{
+        .buttonTop {
             background-color: #FF5722;
             /* display: flex;
             justify-content: center;
@@ -96,16 +96,18 @@
         }
 
 
-        .cs-placeholder{
+        .cs-placeholder {
             width: 132% !important;
         }
 
 
-
-
     </style>
 
-
+    {% if msg %}
+        <div class="alert alert-danger container">
+            Hiện tại đã hết phòng, xin quý khách vui lòng quay lại sau
+        </div>
+    {% endif %}
     <div class="  p-r-50 p-t-72 p-b-50 container informationContainer">
         <div>
             <div class="onOneRow p-b-50">
@@ -113,20 +115,18 @@
                         Đặt phòng nhanh
                     </span>
 
-                    <div class="container-login100-form-btn" style="justify-content: right !important;">
-                        <div class="wrap-login100-form-btn">
+                <div class="container-login100-form-btn" style="justify-content: right !important;">
+                    <div class="wrap-login100-form-btn">
 
-                            <button class="login100-form-btn" type="submit">
-                                <a class=" buttonTop " href="/book_room?type=detail" style="color :white"> Đặt phòng theo yêu cầu</a>
-                            </button>
-                        </div>
+                        <button class="login100-form-btn" type="submit">
+                            <a class=" buttonTop " href="/book_room?type=detail" style="color :white"> Đặt phòng theo
+                                yêu cầu</a>
+                        </button>
                     </div>
+                </div>
 
             </div>
             <form class="login100-form validate-form" action="/book_room/fast" method="post">
-
-
-
 
 
                 <div class="a-col wrap-input100 validate-input ">
@@ -144,7 +144,7 @@
 
                 <div class="wrap-input100 validate-input" data-validate="Name is required">
                     <span class="label-input100">Check in  <span><small
-                        style="font-size: 16px; color: #ff562277;"> (Không cần thanh toán trước - thời gian ở tối đa chỉ 1 ngày)</small></span></span>
+                            style="font-size: 16px; color: #ff562277;"> (Không cần thanh toán trước - thời gian ở tối đa chỉ 1 ngày)</small></span></span>
                     <input type="date" name="date_check_in" class="input100"/>
                     <span class="focus-input100"></span>
                 </div>

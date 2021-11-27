@@ -1,3 +1,4 @@
+import cloudinary as cloudinary
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_admin import Admin
@@ -18,9 +19,20 @@ app.config['MAIL_USERNAME'] = 'cnpmute@gmail.com'
 app.config['MAIL_PASSWORD'] = '25fnxzgm'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
+app.config["PAGE_SIZE"] = 10
+
+
+app.config["CLOUDINARY_INFO"] = {
+    "cloud_name": "ho-chi-minh-city-of-technology-and-education",
+    "api_key": "169675629425989",
+    "api_secret": "OSrJG1bxxUKpQfMHZ0iPjR1nX90"
+}
+cloudinary.config(cloud_name=app.config["CLOUDINARY_INFO"]['cloud_name'],
+                                      api_key=app.config["CLOUDINARY_INFO"]['api_key'],
+                                      api_secret=app.config["CLOUDINARY_INFO"]['api_secret'])
+
+
 mail = Mail(app)
-
-
 
 db = SQLAlchemy(app=app)
 admin = Admin(app=app, name="UTE HOTEL", template_mode="bootstrap4")

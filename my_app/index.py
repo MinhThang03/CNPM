@@ -12,6 +12,8 @@ import hashlib
 from admin import *
 import datetime
 from flask_mail import Message
+import cloudinary
+import cloudinary.uploader
 
 
 # ------------------HOME-------------------------
@@ -62,6 +64,9 @@ def normal_user_login():
 @app.route("/user-logout")
 def normal_user_logout():
     logout_user()
+    session.pop(PHIEU_KEY, None)
+    session.pop(ROOM_KEY, None)
+    session.pop(CART_KEY, None)
     return redirect("/")
 
 
@@ -127,6 +132,27 @@ def active_account(token):
         return render_template("layout/activeUser.html", msg=msg)
 
 
+
+
+@app.route("/view/user-info", methods=['get', 'post'])
+def update_information_account():
+    err_msg = ""
+    if request.method == 'POST':
+        try:
+            avatar = request.files['image']
+            data = request.form.copy()
+            if avatar:
+                info = cloudinary.uploader.upload(avatar)
+                data['image'] = info['secure_url']
+
+            if not utils.update_user(**data):
+                err_msg = "Du lieu dau vao khong hop le!"
+        except:
+            err_msg = "He thong dang co loi! Vui long quay lai sau!"
+    birthdate = current_user.birthdate
+    if birthdate:
+        birthdate = birthdate.strftime('%Y-%m-%d')
+    return render_template("layout/userInformation.html", err_msg=err_msg, birthdate=birthdate)
 # ----------------------END REGISTER ACCOUNT------------------------------
 
 
@@ -170,6 +196,7 @@ def reset_password_post():
             db.session.commit()
             return redirect('/user-login')
     return render_template('layout/reset_password.html')
+
 
 
 ##------------------end email reset password-------------------------
@@ -230,6 +257,9 @@ def book_room_fast():
                 loai_khach = CategoryCustomer.query.all()
                 return render_template('layout/phieu_thue_phong_information.html', num_people=num_people,
                                        count_people=count_people, loai_khach=loai_khach)
+            else:
+                msg = 'fail'
+                return render_template('layout/dat_phong_nhanh.html', msg=msg)
     return redirect('/book_room?type=fast')
 
 
@@ -337,7 +367,7 @@ def book_room_finish():
 
 
 # ----------------------BOOK DETAIL------------------------------
-@app.route('/book_room/detail', methods=['POST'])
+@app.route('/book_room/detail', methods=['GET', 'POST'])
 def book_room_detail():
     if not current_user.is_authenticated:
         return render_template("layout/loginUser.html")
@@ -507,10 +537,9 @@ def admin_confirm_check_in():
             utils.update_bill(bill[0])
         else:
             utils.add_new_bill(room_book)
-        msg = 'Check in thành cồng'
+        msg ='success'
     else:
-        msg = 'check in thất bại'
-
+        sub = 'fail'
     date_int = RoomBook.query.get(room_book_id).date.strftime("%d-%m-%Y")
     return redirect(
         '/admin/lapphieuthuephong?msg=' + msg + '&date_in=' + date_int + '&room_book_id=' + str(room_book_id))
@@ -535,9 +564,7 @@ def update_confirm_bill(bill_id):
     })
 
 
-@app.route("/userInformation")
-def UserInformationControll():
-    return render_template("layout/userInformation.html")
+
 
 
 @app.route("/test")

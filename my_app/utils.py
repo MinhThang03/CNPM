@@ -257,7 +257,7 @@ def get_all_feature_room():
     return results
 
 
-def get_list_room_arg(loai_phong, kieu_phong, loai_giuong, tam_nhin):
+def get_list_room_arg(loai_phong, kieu_phong, loai_giuong, tam_nhin, page = None):
     rooms = Room.query.join(CategoryRoom).filter(CategoryRoom.id == loai_phong).filter(Room.status == 'trống').all()
     result = []
     for room in rooms:
@@ -273,7 +273,6 @@ def get_list_room_arg(loai_phong, kieu_phong, loai_giuong, tam_nhin):
             kieu_phong_room = []
             loai_giuong_room = []
             view_room = []
-
     return result
 
 
@@ -562,9 +561,10 @@ def thanh_toan_hoa_don(bill):
 
 def stats_doanh_thu(from_date=None, to_date=None):
     bills = Bill.query.join(RoomBook,
-                                RoomBook.id == Bill.room_book_id ).join(
-        Room, Room.id == RoomBook.room_id ).join(
-        CategoryRoom, CategoryRoom.id == Room.category_id).add_columns(CategoryRoom.id.label('category_id')).filter(Bill.status=='Đã thanh toán')
+                            RoomBook.id == Bill.room_book_id).join(
+        Room, Room.id == RoomBook.room_id).join(
+        CategoryRoom, CategoryRoom.id == Room.category_id).add_columns(CategoryRoom.id.label('category_id')).filter(
+        Bill.status == 'Đã thanh toán')
 
     if from_date:
         bills = bills.filter(Bill.datetime.__ge__(from_date))
@@ -582,7 +582,6 @@ def stats_doanh_thu(from_date=None, to_date=None):
     for bill in bills:
         sum += bill.Bill.sum_price
 
-
     for cate in list_category_phong:
         item = {
             'id': cate.id,
@@ -596,16 +595,16 @@ def stats_doanh_thu(from_date=None, to_date=None):
 
         item['price'] = price
         if sum > 0:
-            item['ty_le'] = round((price/sum) * 100, 2)
+            item['ty_le'] = round((price / sum) * 100, 2)
         else:
             item['ty_le'] = 0
         result.append(item)
     return result
 
 
-
 def tinh_hieu_hai_ngay(date_check_in, date_check_out):
     return (date_check_out - date_check_in).days
+
 
 def stats_mat_do_su_dung(from_date=None, to_date=None):
     result = []
@@ -640,8 +639,31 @@ def stats_mat_do_su_dung(from_date=None, to_date=None):
                 day += tinh_hieu_hai_ngay(temp.date, temp.date_out)
         item['day'] = day
         if sum_days != 0:
-            item['ty_le'] = round((day/sum_days) * 100, 2)
+            item['ty_le'] = round((day / sum_days) * 100, 2)
         else:
             item['ty_le'] = 0
         result.append(item)
-    return  result
+    return result
+
+
+def update_user(name, email, address=None, phone=None, image=None, birthdate=None):
+    user = current_user
+    user.name = name
+    user.email = email
+    if address:
+        user.address = address
+    if phone:
+        user.phone = phone
+    if image:
+        user.image = image
+    if birthdate:
+        date = datetime.datetime.strptime(birthdate, "%Y-%m-%d").date()
+        user.birthdate = date
+
+    db.session.add(user)
+    try:
+        db.session.commit()
+        return True
+    except:
+        return False
+

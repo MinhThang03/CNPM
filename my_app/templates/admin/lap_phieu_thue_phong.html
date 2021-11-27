@@ -6,280 +6,293 @@
 {% block body %}
 
 
-<link rel="stylesheet" type="text/css" href="../../static/css/LoginUser.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/LoginUser.css">
 
-<style>
-    container {
-        width: 100%;
-    }
-
-    @media (min-width: 576px) {
-        .container {
-            max-width: 540px
+    <style>
+        container {
+            width: 100%;
         }
-    }
 
-    @media (min-width: 768px) {
-        .container {
-            max-width: 720px
+        @media (min-width: 576px) {
+            .container {
+                max-width: 540px
+            }
         }
-    }
 
-    @media (min-width: 992px) {
-        .container {
-            max-width: 960px
+        @media (min-width: 768px) {
+            .container {
+                max-width: 720px
+            }
         }
-    }
 
-    @media (min-width: 1200px) {
-        .container {
-            max-width: 1140px
+        @media (min-width: 992px) {
+            .container {
+                max-width: 960px
+            }
         }
-    }
 
-    .container-fluid {
-        width: 100%;
-        margin-right: auto;
-        margin-left: auto
-    }
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1140px
+            }
+        }
 
-    .row {
-        display: -ms-flexbox;
-        display: flex;
-        -ms-flex-wrap: wrap;
-        flex-wrap: wrap;
-        margin-right: -15px;
-        margin-left: -15px
-    }
-</style>
-<style>
-    .informationContainer {
-        padding: 0px !important;
-        display: flex;
-        justify-content: center;
-        justify-items: center;
-        margin-top: 36px;
-        margin-bottom: 36px;
-        /* width: auto; */
-        /* height: 30px !important; */
-    }
+        .container-fluid {
+            width: 100%;
+            margin-right: auto;
+            margin-left: auto
+        }
 
-    .onOneRow {
-        display: flex;
-        width: 100%;
+        .row {
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            margin-right: -15px;
+            margin-left: -15px
+        }
+    </style>
+    <style>
+        .informationContainer {
+            padding: 0px !important;
+            display: flex;
+            justify-content: center;
+            justify-items: center;
+            margin-top: 36px;
+            margin-bottom: 36px;
+            /* width: auto; */
+            /* height: 30px !important; */
+        }
 
-    }
+        .onOneRow {
+            display: flex;
+            width: 100%;
 
-    .ColorTextGray {
-        color: black !important;
+        }
 
-    }
+        .ColorTextGray {
+            color: black !important;
 
-    .font8rem {
-        font-size: 4rem;
-    }
+        }
 
-    .colorWhite {
-        color: white;
-        text-decoration: none
-    }
+        .font8rem {
+            font-size: 4rem;
+        }
 
-    .bottomDiv {
-        position: absolute !important;
-        bottom: 10px !important;
-        font-size: 22px !important;
+        .colorWhite {
+            color: white;
+            text-decoration: none
+        }
 
-    }
+        .bottomDiv {
+            position: absolute !important;
+            bottom: 10px !important;
+            font-size: 22px !important;
 
-    input {
-        background-color: #E6E6E6 !important;
-        color: black !important;
-    }
+        }
 
-    input.input100 {
-        padding: 0;
-        color: black !important;
-    }
+        input {
+            background-color: #E6E6E6 !important;
+            color: black !important;
+        }
 
-    .fontTitle{
-        font-size: 32px;
-    }
+        input.input100 {
+            padding: 0;
+            color: black !important;
+        }
 
-    .label-input100{
-        color: black !important;
+        .fontTitle {
+            font-size: 32px;
+        }
 
-    }
+        .label-input100 {
+            color: black !important;
 
-    input.input100{
-        font-weight: normal !important;
-    }
-</style>
+        }
+
+        input.input100 {
+            font-weight: normal !important;
+        }
+    </style>
 
 
 
+    {% if msg %}
+        {% if msg == 'success' %}
+            <div class="alert alert-success container">
+                Check in thành công
+            </div>
+        {% else %}
+            <div class="alert alert-danger container">
+                Check in thất bại
+            </div>
+        {% endif %}
+    {% endif %}
+    <div class="  p-r-50 p-t-72 p-b-50 container informationContainer">
+        <div>
 
-<div class="  p-r-50 p-t-72 p-b-50 container informationContainer">
-    <div>
-
-        <form class="login100-form validate-form" method="post" action="/admin/confirm_check_in">
-            <div></div>
-            <input hidden name="room_book_id" value="{{ room_book_id }}">
-            <div class="onOneRow" >
-                <span class="login100-form-title p-b-59 " style="color: #ff5722; font-weight: 300; display: flex; justify-content: space-between;">
+            <form class="login100-form validate-form" method="post" action="/admin/confirm_check_in">
+                <div></div>
+                <input hidden name="room_book_id" value="{{ room_book_id }}">
+                <div class="onOneRow">
+                <span class="login100-form-title p-b-59 "
+                      style="color: #ff5722; font-weight: 300; display: flex; justify-content: space-between;">
                     <div>Mã phòng: {{ room_id }}</div>
                     <div>Ngày nhận phòng: {{ date_in }}</div>
                 </span>
-            </div>
+                </div>
 
-            <div class="onOneRow">
+                <div class="onOneRow">
                 <span class="login100-form-title p-b-59 fontTitle">
                     Số lượng khách tiêu chuẩn
                 </span>
-            </div>
-
-            {% for i in range(num_people) %}
-            <div class="onOneRow">
-                <div class="wrap-input100 validate-input">
-                    <span class="label-input100 font8rem">{{ i + 1 }}</span>
                 </div>
-                <div class="wrap-input100 validate-input">
-                    {% if room_book_infos[i] %}
-                    <input hidden name="book_info_id{{ i }}" value="{{ room_book_infos[i].id }}">
-                    {% endif %}
-                    <span class="label-input100">Khách hàng</span>
-                    <input class="input100" type="text" name="customer_name{{ i }}" placeholder="Khách hàng..." {% if
+
+                {% for i in range(num_people) %}
+                    <div class="onOneRow">
+                        <div class="wrap-input100 validate-input">
+                            <span class="label-input100 font8rem">{{ i + 1 }}</span>
+                        </div>
+                        <div class="wrap-input100 validate-input">
+                            {% if room_book_infos[i] %}
+                                <input hidden name="book_info_id{{ i }}" value="{{ room_book_infos[i].id }}">
+                            {% endif %}
+                            <span class="label-input100">Khách hàng</span>
+                            <input class="input100" type="text" name="customer_name{{ i }}" placeholder="Khách hàng..."
+                                    {% if
                         room_book_infos[i] %} value="{{ room_book_infos[i].customer_name }}" {% endif %}>
-                    <span class="focus-input100"></span>
+                            <span class="focus-input100"></span>
 
 
-                </div>
+                        </div>
 
-                <div class="a-col wrap-input100 validate-input ">
-                    <span class="label-input100 ">Loại khách</span>
+                        <div class="a-col wrap-input100 validate-input ">
+                            <span class="label-input100 ">Loại khách</span>
 
-                    <div class="bottomDiv">
-                        <section class="backgroudP">
-                            <select class="cs-select cs-skin-border widthInput"
-                                style="background-color: #E6E6E6 !important;
-                            color: black !important; border: none;  ;     font-family: Poppins-Regular;" name="loai_khach{{ i }}">
-                                <option value="" disabled selected>Chọn loại khách</option>
-                                {% for item in loai_khach %}
-                                <option value="{{ item.id }}" {% if room_book_infos[i] %} {% if
-                                    room_book_infos[i].category_customer_id==item.id %} selected {% endif %} {% endif
-                                    %}>{{
-                                    item.type }}
-                                </option>
-                                {% endfor %}
-                            </select>
-                        </section>
+                            <div class="bottomDiv">
+                                <section class="backgroudP">
+                                    <select class="cs-select cs-skin-border widthInput"
+                                            style="background-color: #E6E6E6 !important;
+                            color: black !important; border: none;  ;     font-family: Poppins-Regular;"
+                                            name="loai_khach{{ i }}">
+                                        <option value="" disabled selected>Chọn loại khách</option>
+                                        {% for item in loai_khach %}
+                                            <option value="{{ item.id }}" {% if room_book_infos[i] %} {% if
+                                    room_book_infos[i].category_customer_id==item.id %} selected
+                                            {% endif %} {% endif %}>{{ item.type }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </section>
 
-                    </div>
-                </div>
+                            </div>
+                        </div>
 
-                <div class="wrap-input100 validate-input">
-                    <span class="label-input100">CMND</span>
-                    <input style="z-index: -1" class="input100" type="text" name="CMND{{ i }}" placeholder="CMND..." {%
-                        if room_book_infos[i] %} value="{{ room_book_infos[i].CMND }}" {% endif %}>
-                    <span class="focus-input100"></span>
-                </div>
+                        <div class="wrap-input100 validate-input">
+                            <span class="label-input100">CMND</span>
+                            <input style="z-index: -1" class="input100" type="text" name="CMND{{ i }}"
+                                   placeholder="CMND..." {% if room_book_infos[i] %}
+                                   value="{{ room_book_infos[i].CMND }}" {% endif %}>
+                            <span class="focus-input100"></span>
+                        </div>
 
-                <div class="wrap-input100 validate-input">
-                    <span class="label-input100">Địa Chỉ</span>
-                    <input class="input100" type="text" name="address{{ i }}" placeholder="Địa chỉ..." {% if
+                        <div class="wrap-input100 validate-input">
+                            <span class="label-input100">Địa Chỉ</span>
+                            <input class="input100" type="text" name="address{{ i }}" placeholder="Địa chỉ..." {% if
                         room_book_infos[i] %} value="{{ room_book_infos[i].address }}" {% endif %}>
-                    <span class="focus-input100"></span>
-                </div>
-            </div>
-            {% endfor %}
+                            <span class="focus-input100"></span>
+                        </div>
+                    </div>
+                {% endfor %}
 
 
 
 
 
-            <div class="onOneRow">
+                <div class="onOneRow">
                 <span class="login100-form-title p-b-59 fontTitle">
                     Số lượng khách phụ thêm <span style="font-size: 22px; color: #FF5722;">( có thu thêm phí phụ
                         )</span>
                 </span>
-            </div>
-
-            {% for i in range(count_people) %}
-            <div class="onOneRow">
-                <div class="wrap-input100 validate-input">
-                    <span class="label-input100 font8rem">{{ i + num_people + 1 }}</span>
-                </div>
-                <div class="wrap-input100 validate-input">
-                    {% if room_book_infos[i + num_people] %}
-                    <input hidden name="book_info_id{{ i + num_people }}"
-                        value="{{ room_book_infos[i + num_people].id }}">
-                    {% endif %}
-                    <span class="label-input100">Khách hàng</span>
-                    <input class="input100" type="text" name="customer_name{{ i+num_people }}"
-                        placeholder="Khách hàng..." {% if room_book_infos[i + num_people] %}
-                        value="{{ room_book_infos[i + num_people].customer_name }}" {% endif %}>
-                    <span class="focus-input100"></span>
                 </div>
 
-                <div class="a-col wrap-input100 validate-input ">
-                    <span class="label-input100 ">Loại khách</span>
-                    <div class="bottomDiv">
+                {% for i in range(count_people) %}
+                    <div class="onOneRow">
+                        <div class="wrap-input100 validate-input">
+                            <span class="label-input100 font8rem">{{ i + num_people + 1 }}</span>
+                        </div>
+                        <div class="wrap-input100 validate-input">
+                            {% if room_book_infos[i + num_people] %}
+                                <input hidden name="book_info_id{{ i + num_people }}"
+                                       value="{{ room_book_infos[i + num_people].id }}">
+                            {% endif %}
+                            <span class="label-input100">Khách hàng</span>
+                            <input class="input100" type="text" name="customer_name{{ i+num_people }}"
+                                   placeholder="Khách hàng..." {% if room_book_infos[i + num_people] %}
+                                   value="{{ room_book_infos[i + num_people].customer_name }}" {% endif %}>
+                            <span class="focus-input100"></span>
+                        </div>
 
-                        <section class="backgroudP">
-                            <select class="cs-select cs-skin-border widthInput"
-                                style="background-color: #E6E6E6 !important;
-                            color: black !important; border: none;  ;     font-family: Poppins-Regular;" name="loai_khach{{ i+num_people }}">
-                                <option value="" disabled selected>Chọn loại khách</option>
-                                {% for item in loai_khach %}
-                                <option value="{{ item.id }}" {% if room_book_infos[i + num_people] %} {% if
-                                    room_book_infos[i + num_people].category_customer_id==item.id %} selected {% endif
-                                    %} {% endif %}>{{ item.type }}
-                                </option>
-                                {% endfor %}
-                            </select>
-                        </section>
+                        <div class="a-col wrap-input100 validate-input ">
+                            <span class="label-input100 ">Loại khách</span>
+                            <div class="bottomDiv">
+
+                                <section class="backgroudP">
+                                    <select class="cs-select cs-skin-border widthInput"
+                                            style="background-color: #E6E6E6 !important;
+                            color: black !important; border: none;  ;     font-family: Poppins-Regular;"
+                                            name="loai_khach{{ i+num_people }}">
+                                        <option value="" disabled selected>Chọn loại khách</option>
+                                        {% for item in loai_khach %}
+                                            <option value="{{ item.id }}" {% if room_book_infos[i + num_people] %} {% if
+                                    room_book_infos[i + num_people].category_customer_id==item.id %} selected
+                                            {% endif %} {% endif %}>{{ item.type }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </section>
+                            </div>
+                        </div>
+
+                        <div class="wrap-input100 validate-input">
+                            <span class="label-input100">CMND</span>
+                            <input class="input100" type="text" name="CMND{{ i+num_people }}" placeholder="CMND..." {% if
+                        room_book_infos[i + num_people] %}
+                                   value="{{ room_book_infos[i + num_people].CMND }}" {% endif %}>
+                            <span class="focus-input100"></span>
+                        </div>
+
+                        <div class="wrap-input100 validate-input">
+                            <span class="label-input100">Địa Chỉ</span>
+                            <input class="input100" type="text" name="address{{ i+num_people }}"
+                                   placeholder="Địa chỉ..." {% if
+                        room_book_infos[i + num_people] %}
+                                   value="{{ room_book_infos[i + num_people].address }}" {% endif %}>
+                            <span class="focus-input100"></span>
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <div class="onOneRow">
+
+
+                    <div class="container-login100-form-btn">
+                        <div class="wrap-login100-form-btn">
+                            <div class="login100-form-bgbtn"></div>
+                            <button class="login100-form-btn" type="submit">
+                                <span class="colorWhite">Check in</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
-                <div class="wrap-input100 validate-input">
-                    <span class="label-input100">CMND</span>
-                    <input class="input100" type="text" name="CMND{{ i+num_people }}" placeholder="CMND..." {% if
-                        room_book_infos[i + num_people] %} value="{{ room_book_infos[i + num_people].CMND }}" {% endif
-                        %}>
-                    <span class="focus-input100"></span>
-                </div>
 
-                <div class="wrap-input100 validate-input">
-                    <span class="label-input100">Địa Chỉ</span>
-                    <input class="input100" type="text" name="address{{ i+num_people }}" placeholder="Địa chỉ..." {% if
-                        room_book_infos[i + num_people] %} value="{{ room_book_infos[i + num_people].address }}" {%
-                        endif %}>
-                    <span class="focus-input100"></span>
-                </div>
-            </div>
-            {% endfor %}
+            </form>
 
-            <div class="onOneRow">
-
-
-                <div class="container-login100-form-btn">
-                    <div class="wrap-login100-form-btn">
-                        <div class="login100-form-bgbtn"></div>
-                        <button class="login100-form-btn" type="submit">
-                            <span class="colorWhite">Check in</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-
-        </form>
-        {% if msg %}
-        <div class="alert alert-danger minwith420">
-            {{ msg }}
         </div>
-        {% endif %}
-    </div>
-</div>
 
-<script src="../../static/js/bootstrap.min.js"></script>
+    </div>
+
+
+    <script src="../../static/js/bootstrap.min.js"></script>
 {% endblock %}

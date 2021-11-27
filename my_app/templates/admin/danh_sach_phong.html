@@ -34,6 +34,12 @@
             </tbody>
         </table>
 
+        <ul class="pagination" style="display: flex; justify-content: center">
+            {% for i in range(1, page_num + 1) %}
+                <li class="page-item"><a class="page-link" href="/admin/danh_sach_phong/?page={{ i }}">{{ i }}</a></li>
+            {% endfor %}
+        </ul>
+
     </div>
 
 

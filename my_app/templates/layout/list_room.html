@@ -79,9 +79,8 @@
                 {% if not err_msg %}
                     {% for item in rooms.values() %}
                         <div class="col-md-4">
-                            <div class="blog-grid" style="background-image: url(../../static/images/image-1.jpg);">
+                            <div class="blog-grid" style="background-image: url({{ item.image }});">
                             </div>
-
 
                             <div class="desc boderItem">
                                 <h3 class="textInformation"><i class="ti-home"></i> {{ item.name }}</h3>

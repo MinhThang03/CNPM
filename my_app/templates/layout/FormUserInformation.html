@@ -34,11 +34,11 @@
         background-color: #FB5621;
     }
 
-    .ChonTiep{
+    .ChonTiep {
 
-    color: white;
-    margin-top: 30px;
-    margin-left: 114px;
+        color: white;
+        margin-top: 30px;
+        margin-left: 114px;
 
     }
 </style>
@@ -46,74 +46,89 @@
 
 <div class="  p-r-50 p-t-72 p-b-50 container informationContainer">
     <div>
-        <form class="login100-form validate-form">
+
+        {% if err_msg %}
+            <div class="alert alert-danger">
+                {{ err_msg }}
+            </div>
+        {% endif %}
+        <form class="login100-form validate-form" method="post" action="/view/user-info" enctype="multipart/form-data">
             <span class="login100-form-title p-b-59">
-                Thông tinh tài khoản
+                Thông tin tài khoản
             </span>
 
-            <div class="paddingImg"><img class="AnhPhong" src="../../static/images/hotel_feture_2.jpg" alt="">
+            {% if current_user.image %}
+                <div class="paddingImg"><img class="AnhPhong"
+                                             src="{{ current_user.image }}"
+                                             alt="">
+            {% else %}
+                <div class="paddingImg"><img class="AnhPhong"
+                                             src="https://www.pavilionweb.com/wp-content/uploads/2017/03/man-300x300.png"
+                                             alt="">
+            {% endif %}
 
             <div style="position: relative;">
-                <input class=" ChonTiep" id="file-upload" type="file"/>
+                <input class=" ChonTiep" id="file-upload" type="file" name="image"/>
 
 
             </div>
 
 
             </div>
-
 
 
             <div class="wrap-input100 validate-input" data-validate="Name is required">
                 <span class="label-input100">User name</span>
-                <p class="input100">Duong</p>
+                <p class="input100">{{ current_user.username }}</p>
                 <span class="focus-input100"></span>
             </div>
 
             <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
                 <span class="label-input100">Full name</span>
-                <input class="input100" type="text" name="email" placeholder="Full name...">
+                <input class="input100" type="text" name="name" placeholder="Full name..."
+                       value="{{ current_user.name }} ">
                 <span class="focus-input100"></span>
             </div>
 
             <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
                 <span class="label-input100">Email</span>
-                <input class="input100" type="text" name="email" placeholder="Email...">
+                <input class="input100" type="email" name="email" placeholder="Email..."
+                       value="{{ current_user.email }}">
                 <span class="focus-input100"></span>
             </div>
 
             <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
                 <span class="label-input100">Addess</span>
-                <input class="input100" type="text" name="email" placeholder="Addess...">
+                <input class="input100" type="text" name="address" placeholder="Addess..." {% if current_user.address %}
+                       value="{{ current_user.address }}" {% endif %}>
                 <span class="focus-input100"></span>
             </div>
 
             <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
                 <span class="label-input100">Phone</span>
-                <input class="input100" type="text" name="email" placeholder="Phone...">
+                <input class="input100" type="text" name="phone" placeholder="Phone..." {% if current_user.phone %}
+                       value="{{ current_user.phone }}" {% endif %}>
                 <span class="focus-input100"></span>
             </div>
 
 
             <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
                 <span class="label-input100">Birthday</span>
-                <input class="input100" type="date" name="email" placeholder="BrithDay...">
+                <input class="input100" type="date" name="birthdate" placeholder="BrithDay..."
+
+                        {% if birthdate %}
+                       value="{{ birthdate }}" {% endif %} >
                 <span class="focus-input100"></span>
             </div>
-
-
-
-
 
 
             <div class="container-login100-form-btn">
                 <div class="wrap-login100-form-btn">
                     <div class="login100-form-bgbtn"></div>
-                    <button class="login100-form-btn">
+                    <button class="login100-form-btn" type="submit">
                         Edit
                     </button>
                 </div>
-
 
             </div>
         </form>

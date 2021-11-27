@@ -1,10 +1,11 @@
+import math
 from datetime import datetime
 
 from flask_admin.contrib.sqla import ModelView
 from flask_admin import BaseView, expose
 from flask_login import logout_user, current_user
 from flask import redirect, request
-from my_app import db, admin, utils
+from my_app import db, admin, utils, app
 from my_app.models import Room, CategoryRoom, User, Role, CategoryCustomer, LabelRoom, RoomBook, TypeRoom, \
     BookInformation, TypeBook, Bill, GroupLabelRoom
 
@@ -100,6 +101,13 @@ class BillView(AuthenticatedView):
     column_searchable_list = ('customer_id', 'employee_id', 'datetime')
 
 
+class BillView_Staff(AuthenticatedView_Staff):
+    can_export = True
+    can_delete = False
+    can_view_details = True
+    column_searchable_list = ('customer_id', 'employee_id', 'datetime')
+
+
 # -----------END VIEW ADMIN-----------------------------------------
 
 
@@ -139,9 +147,6 @@ class LogoutView(BaseView):
         return current_user.is_authenticated
 
 
-
-
-
 # ------------- Add view Admin
 admin.add_view(UserView(User, db.session, name='Người dùng', category='Quản lý người dùng'))
 admin.add_view(RoleView(Role, db.session, name='Quyền', category='Quản lý người dùng'))
@@ -154,7 +159,7 @@ admin.add_view(RoomBookView(RoomBook, db.session, name='Phiếu đặt phòng', 
 admin.add_view(
     BookInformationView(BookInformation, db.session, name="Thông tin phiếu đặt phòng", category='Quản lý đặt phòng'))
 admin.add_view(TypeBookView(TypeBook, db.session, name='Kiểu đặt phòng', category='Quản lý đặt phòng'))
-admin.add_view(BillView(Bill, db.session, name='Hóa đơn', category='Thống kê'))
+
 admin.add_view(GroupLabelRoomView(GroupLabelRoom, db.session, name='Loại nhãn phòng', category='Quản lý phòng'))
 
 # admin.add_view(StatsView(name="Thong ke doanh thu"))
@@ -178,7 +183,6 @@ class ThongKeDoanhThu(AuthenticatedViewWithBaseView):
         return self.render('admin/ThongKeDoanhThu.html')
 
 
-
 class stats_mat_do_su_dung(AuthenticatedViewWithBaseView):
     @expose('/')
     def index(self):
@@ -196,6 +200,7 @@ class stats_doanh_thu(AuthenticatedViewWithBaseView):
         stats = utils.stats_doanh_thu(from_date=from_date, to_date=to_date)
         return self.render('admin/stats_doanh_thu.html', stats=stats)
 
+
 class LapPhieuThuePhong(AuthenticatedViewWithBaseView):
     @expose('/', methods=['GET'])
     def index(self):
@@ -212,22 +217,27 @@ class LapPhieuThuePhong(AuthenticatedViewWithBaseView):
             loai_khach = CategoryCustomer.query.all()
 
             return self.render('admin/lap_phieu_thue_phong.html', num_people=numbers_people,
-                           count_people=count_people, loai_khach=loai_khach, date_in=date_in,
-                           room_book_infos=room_book_infos, room_id=room_id, room_book_id=room_book_id, msg=msg)
+                               count_people=count_people, loai_khach=loai_khach, date_in=date_in,
+                               room_book_infos=room_book_infos, room_id=room_id, room_book_id=room_book_id, msg=msg)
         return self.render('admin/lap_phieu_thue_phong.html', num_people=0, count_people=0)
-
-class LapHoaDon(AuthenticatedViewWithBaseView):
-    @expose('/')
-    def index(self):
-        return self.render('admin/LapHoaDon.html')
 
 
 class danh_sach_phong(AuthenticatedViewWithBaseView):
     @expose('/')
     def index(self):
         rooms = Room.query.all()
-        roomsdto = utils.covert_room_been_staff(rooms)
-        return self.render('admin/danh_sach_phong.html', roomsdto=roomsdto)
+        page =request.args.get('page')
+        if not page:
+            page = 1
+        else:
+            page = int(page)
+        count = len(rooms)
+        size = app.config["PAGE_SIZE"]
+        start = (page - 1) * size
+        end = start + size
+
+        roomsdto = utils.covert_room_been_staff(rooms[start:end])
+        return self.render('admin/danh_sach_phong.html', roomsdto=roomsdto, page_num=math.ceil(count/size))
 
 
 class danh_sach_phong_dang_dat(AuthenticatedViewWithBaseView):
@@ -241,15 +251,21 @@ class danh_sach_phong_dang_dat(AuthenticatedViewWithBaseView):
 class danh_sach_hoa_don_chua_thanh_toan(AuthenticatedViewWithBaseView):
     @expose('/')
     def index(self):
-        bills = Bill.query.join(RoomBook).filter(Bill.status != 'Đã thanh toán').filter(RoomBook.status == 'Đã nhận phòng').all()
+
+        bills = Bill.query.join(RoomBook).filter(Bill.status != 'Đã thanh toán').filter(
+            RoomBook.status == 'Đã nhận phòng').all()
         return self.render('admin/ds_hoa_don_chua_thanh_toan.html', bills=bills)
 
 
 admin.add_view(danh_sach_phong(name='Danh sách phòng', category='Quản lí phòng'))
 admin.add_view(danh_sach_phong_dang_dat(name='Phiếu phòng đang đặt', category='Quản lí đặt phòng'))
 admin.add_view(LapPhieuThuePhong(name='Lập phiếu thuê phòng', category='Quản lí đặt phòng'))
-admin.add_view(LapHoaDon(name='Lập Hoá Đơn'))
-admin.add_view(stats_mat_do_su_dung(name='Báo cáo mật độ sử dụng phòng', category='Thống kê'))
-admin.add_view(LogoutView(name="Đăng xuất"))
-admin.add_view(stats_doanh_thu(name='Thống kê doanh thu', category='Thống kê'))
 admin.add_view(danh_sach_hoa_don_chua_thanh_toan(name='Danh sách hóa đơn chưa thanh toán', category='Thanh toán'))
+admin.add_view(BillView_Staff(Bill, db.session, name='Hóa đơn', category='Thanh toán', endpoint='staff/bill'))
+
+
+
+admin.add_view(stats_mat_do_su_dung(name='Báo cáo mật độ sử dụng phòng', category='Thống kê'))
+admin.add_view(stats_doanh_thu(name='Thống kê doanh thu', category='Thống kê'))
+admin.add_view(BillView(Bill, db.session, name='Hóa đơn', category='Thống kê'))
+admin.add_view(LogoutView(name="Đăng xuất"))
