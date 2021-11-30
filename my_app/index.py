@@ -539,7 +539,7 @@ def admin_confirm_check_in():
             utils.add_new_bill(room_book)
         msg ='success'
     else:
-        sub = 'fail'
+        msg = 'fail'
     date_int = RoomBook.query.get(room_book_id).date.strftime("%d-%m-%Y")
     return redirect(
         '/admin/lapphieuthuephong?msg=' + msg + '&date_in=' + date_int + '&room_book_id=' + str(room_book_id))

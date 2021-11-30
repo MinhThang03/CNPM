@@ -11,3 +11,6 @@ PyMySQL==1.0.2
 SQLAlchemy==1.4.23
 Werkzeug==2.0.1
 WTForms==2.3.3
+Flask-Mail==0.9.1
+PyJWT==1.7.1
+cloudinary==1.28.0
